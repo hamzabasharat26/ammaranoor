@@ -143,7 +143,7 @@ export default function AgentLauncher() {
             data-audio-skip="true"
             className="text-left transition-colors hover:text-fg"
           >
-            Ask me anything about Hamza&apos;s work — projects, stack, cost, timeline.
+            Ask me anything about Ammara&apos;s work — projects, stack, availability.
           </button>
           <button
             type="button"
@@ -186,7 +186,7 @@ export default function AgentLauncher() {
           onClick={openPanel}
           aria-controls={panelId}
           aria-expanded={false}
-          aria-label="Ask Pixel AI about Hamza's work"
+          aria-label="Ask Pixel about Ammara's work"
           data-hint={hint ? "true" : undefined}
           data-audio-skip="true"
           className="agent-launcher fixed bottom-5 right-5 z-[95] inline-flex h-14 items-center gap-2.5 rounded-full border border-line-strong bg-fg p-2 pr-2 text-sm font-medium text-ink shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] md:hidden"

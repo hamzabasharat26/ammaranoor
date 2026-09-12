@@ -29,11 +29,9 @@ const CHROME = [
 if (!CHROME) throw new Error("No Chrome/Edge found");
 
 // Anchor ids in scroll order. Keep in sync with src/app/page.tsx.
-const SECTIONS = ["top", "proof", "services", "work", "about", "faq", "contact"];
-/** Sections where the particle field is on screen, so a blank frame is a bug. */
-// #contact only shows a 0.2-opacity ghost, so its frames are legitimately
-// small — excluded or it retries forever.
-const CANVAS_SECTIONS = new Set(["top", "proof"]);
+const SECTIONS = ["top", "work", "capabilities", "leadership", "proof", "about", "faq", "contact"];
+/** Sections where the hero backdrop is on screen, so a blank frame is a bug. */
+const CANVAS_SECTIONS = new Set(["top"]);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

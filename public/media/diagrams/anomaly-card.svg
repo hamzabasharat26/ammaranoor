@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-labelledby="t">
+  <title id="t">PatchCore anomaly detection — 99.56% AUROC on MVTec AD carpet</title>
+  <style>
+    .h{font:600 30px ui-sans-serif,system-ui,'Segoe UI',sans-serif;fill:#16161D}
+    .s{font:400 26px ui-sans-serif,system-ui,'Segoe UI',sans-serif;fill:#5B5B66}
+    .m{font:600 22px ui-monospace,'Cascadia Mono',Consolas,monospace;fill:#6366F1;letter-spacing:.16em}
+    .big{font:300 132px ui-sans-serif,system-ui,'Segoe UI',sans-serif;fill:#16161D}
+    .chip{fill:#EEF0FF;stroke:#6366F1;stroke-width:2;rx:16}
+    .chipw{fill:#FDF0F6;stroke:#EC4899;stroke-width:2;rx:16}
+  </style>
+  <rect width="1200" height="750" fill="#FBFAF8"/>
+  <rect x="0" y="0" width="1200" height="750" fill="none"/>
+  <text class="m" x="64" y="96">MVTEC AD · CARPET</text>
+  <text class="big" x="60" y="268">99.56%</text>
+  <text class="h" x="64" y="322">Image AUROC, PatchCore rebuilt from the paper</text>
+
+  <g>
+    <rect class="chip" x="64" y="392" width="330" height="96"/>
+    <text class="h" x="96" y="440">87 / 89</text>
+    <text class="s" x="96" y="472">defects caught</text>
+
+    <rect class="chip" x="424" y="392" width="330" height="96"/>
+    <text class="h" x="456" y="440">26 / 28</text>
+    <text class="s" x="456" y="472">good pieces passed</text>
+
+    <rect class="chipw" x="784" y="392" width="352" height="96"/>
+    <text class="h" x="816" y="440">535 ms</text>
+    <text class="s" x="816" y="472">CPU, against a 33 ms budget</text>
+  </g>
+
+  <text class="s" x="64" y="576">Frozen WideResNet-50  →  patch memory bank  →  1% coreset  →  nearest-neighbour score</text>
+  <text class="s" x="64" y="624">Trained on defect-free images only. Both misses were thread defects.</text>
+  <rect x="64" y="668" width="1072" height="3" fill="#E4E1DC"/>
+  <text class="m" x="64" y="716" fill="#8B5CF6">DIAGRAM · NOT A SCREENSHOT</text>
+</svg>

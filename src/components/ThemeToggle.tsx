@@ -7,7 +7,7 @@ type Theme = "light" | "dark";
 
 /**
  * Light / dark switch. The first paint is already themed by the inline script
- * in layout.tsx (localStorage → OS → dark). This reads that back and toggles
+ * in layout.tsx (localStorage → light). This reads that back and toggles
  * it; a `data-theme` change on <html> re-points every token in globals.css, so
  * nothing else needs to know.
  *
@@ -20,8 +20,8 @@ const subscribe = (cb: () => void) => {
   return () => window.removeEventListener("themechange", cb);
 };
 const getSnapshot = (): Theme =>
-  (document.documentElement.dataset.theme as Theme) || "dark";
-const getServerSnapshot = (): Theme => "dark";
+  (document.documentElement.dataset.theme as Theme) || "light";
+const getServerSnapshot = (): Theme => "light";
 
 export default function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

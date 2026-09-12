@@ -1,122 +1,84 @@
+"use client";
+
 /* ============================================================
-   Shared motion vocabulary.
+   Shared motion vocabulary — no animation library.
 
-   Before this existed, 10 of the 12 tweens on the site were the
-   same treatment — from { y, autoAlpha: 0 }, expo.out, ~1s —
-   differing only by 10px of travel. That is why the page read as
-   generic next to a reference whose entire pitch is motion.
+   This file used to wrap GSAP + ScrollTrigger. Both are gone:
 
-   Every helper here is gated on prefers-reduced-motion and ships a
-   reduced variant, because GSAP writes inline styles that the CSS
-   media query in globals.css cannot reach.
+   - Scroll reveals moved to src/lib/reveal.ts (IntersectionObserver + a CSS
+     transition). ScrollTrigger measured every trigger element on init, which
+     a Lighthouse trace attributed 2.4s of styleLayout to — the largest single
+     cost on the page.
+   - The hero's entrance is now CSS keyframes with per-element delays
+     (`.hero-in-*` in globals.css), which the compositor runs without any
+     main-thread work at all.
 
-   Trimmed 2026-09: revealMask, revealLines, splitLines and countUp had zero
-   call sites left after the hero/case-study rewrites and were dead weight.
+   What is left is the one effect CSS genuinely cannot do: a magnetic pull
+   toward the pointer. It is transform-only and the caller must gate it on
+   reduced motion — a media query cannot reach an inline transform.
    ============================================================ */
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
-/** Matches the --ease-* tokens in globals.css so DOM and GSAP agree. */
-export const EASE = {
-  outExpo: "expo.out",
-  inOutQuint: "power4.inOut",
-} as const;
-
-type Ctx = { root?: gsap.DOMTarget | null; start?: string };
-
-/**
- * Runs `full` when motion is welcome, `reduced` otherwise. Both branches are
- * reverted automatically by the surrounding useGSAP scope.
- */
-export function withMotion(
-  full: () => void | (() => void),
-  reduced: () => void
-) {
-  const mm = gsap.matchMedia();
-  mm.add(
-    {
-      ok: "(prefers-reduced-motion: no-preference)",
-      reduce: "(prefers-reduced-motion: reduce)",
-    },
-    (ctx) => {
-      // gsap.matchMedia runs a returned function as cleanup when the query
-      // stops matching or the context reverts — so a `full` branch that wires
-      // listeners can hand its teardown straight back.
-      if (ctx.conditions?.ok) return full();
-      reduced();
-    }
+/** True when the visitor has asked for less motion. */
+export function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
-  return mm;
-}
-
-/**
- * The reduced-motion answer for every reveal: make sure the content is simply
- * THERE.
- *
- * This used to be a `from({ autoAlpha: 0 })` with a ScrollTrigger, which was a
- * bug — `.from()` renders its start state immediately, so every target was
- * hidden up front and only revealed if its trigger later fired. Any trigger
- * that didn't fire left the content invisible permanently, which is how the
- * nav, headings and corner text vanished on the reduced-motion path.
- *
- * There is also no reason to animate here at all. Reduced motion means show it,
- * not fade it in on scroll. No tween, no trigger, nothing to get stuck.
- */
-export function appear(targets: gsap.TweenTarget) {
-  return gsap.set(targets, {
-    autoAlpha: 1,
-    x: 0,
-    y: 0,
-    xPercent: 0,
-    yPercent: 0,
-    scale: 1,
-    clearProps: "clipPath",
-  });
-}
-
-/** Body copy and small furniture. Short travel, quick — a supporting move. */
-export function revealCopy(targets: gsap.TweenTarget, trigger?: Ctx) {
-  return gsap.from(targets, {
-    y: 14,
-    autoAlpha: 0,
-    duration: 0.75,
-    ease: EASE.outExpo,
-    stagger: 0.07,
-    scrollTrigger: trigger?.root
-      ? { trigger: trigger.root, start: trigger.start ?? "top 82%", once: true }
-      : undefined,
-  });
 }
 
 /**
  * Magnetic pull: the element eases toward the pointer while it is within
- * `radius` px, and springs back on leave. Transforms only. Returns a cleanup
- * fn; call it from the surrounding effect. No-op is the caller's job —
- * withMotion() should gate this so reduced motion never wires the listeners.
+ * `radius` px of it, and springs back on leave. Transform only, written once
+ * per pointermove and interpolated by a CSS transition.
+ *
+ * Returns a cleanup function. Do not call this under reduced motion.
  */
 export function magnetic(el: HTMLElement, radius = 90, strength = 0.32) {
-  const move = (e: PointerEvent) => {
-    const r = el.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    if (Math.hypot(dx, dy) > radius + Math.max(r.width, r.height) / 2) {
-      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: EASE.outExpo });
-      return;
-    }
-    gsap.to(el, { x: dx * strength, y: dy * strength, duration: 0.4, ease: EASE.outExpo });
-  };
-  const reset = () => gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: EASE.outExpo });
+  // One rect read per frame at most, cached between moves — reading it inside
+  // the raw pointermove handler is what turns this into layout thrash.
+  let rect: DOMRect | null = null;
+  let queued = false;
+  let last: PointerEvent | null = null;
 
+  const apply = () => {
+    queued = false;
+    const e = last;
+    if (!e) return;
+    rect ??= el.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+    const out = Math.hypot(dx, dy) > radius + Math.max(rect.width, rect.height) / 2;
+    el.style.transform = out
+      ? "translate3d(0,0,0)"
+      : `translate3d(${dx * strength}px, ${dy * strength}px, 0)`;
+  };
+
+  const move = (e: PointerEvent) => {
+    last = e;
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(apply);
+  };
+  const reset = () => {
+    rect = null;
+    el.style.transform = "translate3d(0,0,0)";
+  };
+  const invalidate = () => {
+    rect = null;
+  };
+
+  el.classList.add("magnetic");
   window.addEventListener("pointermove", move, { passive: true });
+  window.addEventListener("scroll", invalidate, { passive: true });
+  window.addEventListener("resize", invalidate);
   el.addEventListener("pointerleave", reset);
+
   return () => {
     window.removeEventListener("pointermove", move);
+    window.removeEventListener("scroll", invalidate);
+    window.removeEventListener("resize", invalidate);
     el.removeEventListener("pointerleave", reset);
-    gsap.set(el, { x: 0, y: 0 });
+    el.classList.remove("magnetic");
+    el.style.transform = "";
   };
 }

@@ -16,7 +16,7 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 // Per-IP sliding window. In-memory is fine for a single instance; move to a
-// shared store (the Supabase MCP is connected) if this ever runs multi-region.
+// shared store if this ever runs multi-region.
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const PER_IP = 10;
 const GLOBAL_DAILY = 400;
@@ -70,7 +70,8 @@ export async function POST(req: Request) {
   // When enabled, stream a grounded answer here with a system prompt that:
   //   - answers ONLY from src/content/agent.ts + site content,
   //   - never invents employers, projects, metrics or dates,
-  //   - never quotes a price outside $1,500 / $5,000–15,000,
+  //   - never quotes a rate, a salary expectation or a notice period —
+  //     none of those exist in the content and none may be improvised,
   //   - hands off to email when the answer is not in the content.
   // Left unimplemented on purpose so no AI dependency ships until it is turned on.
   return NextResponse.json(

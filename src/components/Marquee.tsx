@@ -24,7 +24,7 @@ export default function Marquee({
 
   return (
     <div
-      className={`marquee-track relative flex w-full min-w-0 max-w-full overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)] ${className}`}
+      className={`marquee-track relative flex w-full min-w-0 max-w-full overflow-hidden ${className}`}
     >
       <div className="marquee">
         {list(false)}

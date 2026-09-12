@@ -3,19 +3,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Type-only, straight from types.ts — not the barrel. A type-only import from
 // "@/content" was enough to keep the whole projects.ts module (DRAFT text
 // included) in this client chunk; importing the concrete submodule removes the
 // edge. Only the Pick below crosses the server/client boundary, picked in a
 // Server Component parent.
 import type { Domain, Project } from "@/content/types";
-import { appear, revealCopy, withMotion } from "@/lib/motion";
 import Gallery from "./Gallery";
+import { useReveal } from "@/lib/reveal";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export type ProjectCard = Pick<
   Project,
@@ -187,12 +183,12 @@ function Card({ p }: { p: ProjectCard }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {/* category + metric chips, croge-style */}
-        <span className="absolute left-3 top-3 rounded-full border border-line-strong bg-ink/70 px-2.5 py-1 text-[0.625rem] uppercase tracking-wider text-fg backdrop-blur-sm">
+        <span className="absolute left-3 top-3 rounded-full border border-line-strong bg-ink/90 px-2.5 py-1 text-[0.625rem] uppercase tracking-wider text-fg">
           {DOMAIN_LABEL[p.domains[0]]}
         </span>
         {metric && (
-          <span className="absolute right-3 top-3 flex max-w-[calc(100%-7rem)] items-baseline gap-1.5 overflow-hidden rounded-full border border-line-strong bg-ink/80 px-2.5 py-1 backdrop-blur-sm">
-            <b className="shrink-0 text-[0.75rem] font-semibold text-a1">{metric.value}</b>
+          <span className="absolute right-3 top-3 flex max-w-[calc(100%-7rem)] items-baseline gap-1.5 overflow-hidden rounded-full border border-line-strong bg-ink/90 px-2.5 py-1">
+            <b className="shrink-0 text-[0.75rem] font-semibold text-accent-ink">{metric.value}</b>
             {metric.label && (
               <span className="truncate text-[0.625rem] text-fg-dim">{metric.label}</span>
             )}
@@ -256,31 +252,12 @@ export default function Projects({
   const visible = showAll ? shown : shown.slice(0, HOME_LIMIT);
   const hiddenCount = shown.length - visible.length;
 
-  useGSAP(
-    () => {
-      const cells = gsap.utils.toArray<HTMLElement>(".proj-cell");
-      withMotion(
-        () => {
-          revealCopy(gsap.utils.toArray(".proj-head"), {
-            root: root.current,
-            start: "top 82%",
-          });
-          if (cells.length) {
-            gsap.from(cells, {
-              y: 26,
-              autoAlpha: 0,
-              duration: 0.65,
-              ease: "expo.out",
-              stagger: { each: 0.07, grid: "auto", from: "start" },
-              scrollTrigger: { trigger: cells[0], start: "top 88%", once: true },
-            });
-          }
-        },
-        () => appear([".proj-head", ...cells])
-      );
-    },
-    { scope: root, dependencies: [filter, showAll] }
-  );
+  // Re-observes after a filter change, because the cells that just mounted
+  // start hidden and nothing else would ever reveal them.
+  useReveal(root, {
+    selector: ".proj-head, .proj-cell",
+    deps: [filter, showAll],
+  });
 
   return (
     <section

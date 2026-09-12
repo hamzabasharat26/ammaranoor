@@ -55,7 +55,7 @@ const out = [
   "",
   `**${total} unfilled** across ${withDrafts.length} of ${groups.length} projects.`,
   "",
-  "These are the `limitations` entries only Hamza can write. They are stripped",
+  "These are the `limitations` entries only Ammara can write. They are stripped",
   "from the rendered case study (`src/app/work/[slug]/page.tsx`) and shown as a",
   "dev-only banner, so nothing below is currently public.",
   "",

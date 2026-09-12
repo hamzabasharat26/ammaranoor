@@ -3,14 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import { site } from "@/content/site";
-import { appear, withMotion } from "@/lib/motion";
 import ThemeToggle from "./ThemeToggle";
 import BrandMark from "./BrandMark";
 
-gsap.registerPlugin(useGSAP);
 
 /** The pill occupies roughly this band, measured from the viewport top. */
 const PILL_TOP = 16;
@@ -35,31 +31,16 @@ export default function Nav() {
     };
   }, [menuOpen]);
 
-  useGSAP(
-    () => {
-      // The one reveal that was never routed through withMotion, which left the
-      // nav permanently hidden on the reduced-motion path.
-      // The 0.9s delay is choreographed against the home hero's reveal. On a
-      // subpage there is no hero to wait for, and a nav that fades in a second
-      // late reads as a broken header — so the delay is home-only.
-      const isHome = document.getElementById("top") !== null;
+  // Entrance. CSS, not GSAP: this is one keyframe on one element, and pulling
+  // the whole library in for it kept GSAP on the critical path of every route.
+  // The delay is choreographed against the home hero; on a subpage there is no
+  // hero to wait for, and a header that fades in a second late reads as broken.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    el.dataset.enter = document.getElementById("top") ? "home" : "page";
+  }, []);
 
-      withMotion(
-        () => {
-          gsap.from(root.current, {
-            y: -24,
-            autoAlpha: 0,
-            duration: isHome ? 1 : 0.5,
-            delay: isHome ? 0.9 : 0,
-            ease: "expo.out",
-          });
-        },
-        () => appear(root.current)
-      );
-
-    },
-    { scope: root }
-  );
 
   /**
    * The pill is translucent dark; over the white About/FAQ band it composites

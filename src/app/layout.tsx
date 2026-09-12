@@ -32,10 +32,10 @@ export const metadata: Metadata = {
 };
 
 // Runs before first paint: stamps data-theme on <html> from the saved choice,
-// else dark — the site always opens dark on a first visit, regardless of OS
+// else light — the site opens on paper for every first visit regardless of OS
 // preference, and only switches when the visitor uses the toggle. Keeps the
 // toggle flash-free either way.
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.dataset.theme=(t==="light"||t==="dark")?t:"dark"}catch(e){document.documentElement.dataset.theme="dark"}})()`;
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.dataset.theme=(t==="light"||t==="dark")?t:"light"}catch(e){document.documentElement.dataset.theme="light"}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

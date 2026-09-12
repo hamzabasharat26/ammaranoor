@@ -143,7 +143,7 @@ export default function Gallery({
             {item.kind === "clip" && !(active && (hovered || feature || reduced)) && (
               <span
                 aria-hidden
-                className="absolute bottom-3 left-3 flex size-8 items-center justify-center rounded-full border border-white/30 bg-ink/60 backdrop-blur-sm"
+                className="absolute bottom-3 left-3 flex size-8 items-center justify-center rounded-full border border-white/30 bg-black/60"
               >
                 <svg viewBox="0 0 24 24" className="size-3.5 fill-white/90" aria-hidden>
                   <path d="M8 5v14l11-7z" />
@@ -157,7 +157,7 @@ export default function Gallery({
       {/* gradient so controls read on any frame */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-ink/80 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 to-transparent"
       />
 
       {feature && n > 1 && (
@@ -184,10 +184,13 @@ export default function Gallery({
               }}
               aria-label={`Show: ${item.caption}`}
               aria-current={idx === i}
-              className={`h-1.5 rounded-full transition-all ${
+              // The dot is 6px; the button is 24px. WCAG 2.2 target-size wants
+              // 24×24 CSS px of hit area, so the padding carries it and the
+              // ::before draws the dot.
+              className={`grid h-6 w-6 place-items-center rounded-full transition-all before:block before:h-1.5 before:rounded-full before:transition-all before:content-[''] ${
                 idx === i
-                  ? "w-5 bg-white"
-                  : "w-1.5 bg-white/45 hover:bg-white/70"
+                  ? "before:w-5 before:bg-white"
+                  : "before:w-1.5 before:bg-white/45 hover:before:bg-white/70"
               }`}
             />
           ))}
@@ -258,7 +261,7 @@ function GalBtn({
         e.stopPropagation();
         onClick();
       }}
-      className={`absolute top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-ink/55 text-white opacity-0 backdrop-blur-sm transition-opacity hover:bg-ink/80 focus-visible:opacity-100 group-hover/gal:opacity-100 ${
+      className={`absolute top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/75 focus-visible:opacity-100 group-hover/gal:opacity-100 ${
         side === "left" ? "left-3" : "right-3"
       }`}
     >

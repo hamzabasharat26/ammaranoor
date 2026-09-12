@@ -15,8 +15,8 @@ export default function OgImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#060507",
-          color: "#f3f1f7",
+          background: "#FBFAF8",
+          color: "#16161D",
           padding: "72px",
           fontFamily: "sans-serif",
         }}
@@ -29,7 +29,7 @@ export default function OgImage() {
             fontSize: 26,
             letterSpacing: 2,
             textTransform: "uppercase",
-            color: "#7d7989",
+            color: "#6A6875",
           }}
         >
           <div
@@ -37,7 +37,7 @@ export default function OgImage() {
               width: 18,
               height: 18,
               borderRadius: 9999,
-              background: "linear-gradient(135deg,#34d399,#22d3ee,#7c3aed)",
+              background: "linear-gradient(135deg,#6366F1,#8B5CF6,#EC4899)",
             }}
           />
           {site.name}
@@ -47,13 +47,13 @@ export default function OgImage() {
           <div style={{ fontSize: 68, lineHeight: 1.05, fontWeight: 300, maxWidth: 980 }}>
             {site.headline}
           </div>
-          <div style={{ fontSize: 30, color: "#a5a1b0" }}>{site.role}</div>
+          <div style={{ fontSize: 30, color: "#4B4A55" }}>{site.role}</div>
         </div>
 
-        <div style={{ display: "flex", gap: 48, fontSize: 24, color: "#a5a1b0" }}>
+        <div style={{ display: "flex", gap: 48, fontSize: 24, color: "#4B4A55" }}>
           {site.proofStrip.slice(0, 3).map((s) => (
             <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <span style={{ fontSize: 40, color: "#f3f1f7" }}>{s.value}</span>
+              <span style={{ fontSize: 40, color: "#16161D" }}>{s.value}</span>
               <span>{s.label}</span>
             </div>
           ))}

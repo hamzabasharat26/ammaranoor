@@ -1,4 +1,4 @@
-# CLAUDE.md — hamzabasharat.com
+# CLAUDE.md — Ammara Noor's portfolio
 
 Standing instructions for every session in this repo. Read before acting.
 When a request conflicts with this file, say so and ask; do not silently override it.
@@ -7,36 +7,51 @@ When a request conflicts with this file, say so and ask; do not silently overrid
 
 ## 1. What this site is
 
-A portfolio for **Hamza Basharat, AI & Computer Vision Engineer** (Lahore, Pakistan).
-Two audiences, one spine:
+A portfolio for **Ammara Noor, AI / ML Engineer** (Lahore, Pakistan) — computer
+vision, LLM & RAG systems, production ML. She is available immediately for
+full-time roles.
+
+One audience, one job:
 
 | Audience | Arrives via | Needs to believe in 30 seconds |
 |---|---|---|
-| Technical recruiter / hiring manager | LinkedIn, CV link, referral | He has shipped vision systems to production, with numbers |
-| Prospective client | Referral, cold search | He can take a problem from dataset to a monitored deployment |
+| Technical recruiter / hiring manager | LinkedIn, CV link, referral | She has taken a model from raw data to something running on a production line, and can say where it breaks |
 
-**The spine is AI/CV engineering.** The evidence of skill is the shipped project
-work — the case studies, the live sites, the numbers — never the site's chrome.
-If a change makes the site read as "motion designer" or "full-stack web studio",
-it is wrong regardless of how good it looks.
+**The spine is production AI/ML engineering.** The evidence is the shipped project
+work — the case studies, the numbers, the honest limitations — never the site's
+chrome. If a change makes the site read as "web studio" or "motion designer", it is
+wrong regardless of how good it looks.
+
+The leadership section is the differentiator, not the pitch. It goes after the work.
 
 ---
 
 ## 2. Content law
 
-- `src/content/` is the **single source of truth**. No copy, metric, project title,
-  or link is ever hardcoded in a component. If you need new copy, add a field to the
-  data and render it.
-- Every number on the site traces to `Hamza_BasharatCV.pdf`. **Never invent a metric,
-  a client name, a date, or an outcome.** If a slot needs a number that does not exist,
-  leave the slot out and tell Hamza what is missing.
-- `src/content/testimonials.ts` is empty until Hamza pastes real LinkedIn
-  recommendations. **Never write a testimonial.** Never generate a placeholder quote,
-  even marked as fake — placeholder quotes get shipped by accident. If the array is
-  empty, the section does not render.
-- Fields marked `DRAFT:` are Hamza's to fill. Do not guess at them. Surface them in a
-  checklist instead.
+- `src/content/` is the **single source of truth**. No copy, metric, project title
+  or link is ever hardcoded in a component. If you need new copy, add a field to
+  the data and render it.
+- Every number on the site traces to one of the three source CVs in
+  `docs/drive/ammara/` or to the public repo
+  `github.com/ammaran620-de/industrial-anomaly-detection-mlops`. **Never invent a
+  metric, a client name, a date or an outcome.** If a slot needs a number that does
+  not exist, leave the slot out and say what is missing.
+- The verified set, in full: 95% defect accuracy on a live line · ~1,600 images
+  collected on-site · 3 defect classes + PatchCore for unseen ones · 99.56% AUROC
+  on MVTec AD carpet · 87/89 defects caught · 26/28 good pieces passed · 0.9775
+  precision/recall/F1 · 535 ms/image CPU against a 33 ms budget · 3 mills requested
+  evaluations after Textile Asia · 1st ICAT 2025 · runner-up NAIS 2025 · CGPA 3.44.
+- `src/content/testimonials.ts` is empty until Ammara pastes real LinkedIn
+  recommendations. **Never write a testimonial.** Never generate a placeholder
+  quote, even marked as fake — placeholder quotes get shipped by accident. While
+  the array is empty the section does not render.
+- Fields marked `DRAFT:` are Ammara's to fill. Do not guess at them.
 - No lorem ipsum, ever. If real content is missing, render the empty state.
+- **Media provenance.** Only publish what is hers. Another engineer's screenshots
+  and demo clips were deleted from this repo in 2026-09 rather than re-captioned;
+  a technique wall of borrowed footage is the single fastest way to lose an
+  interview. Where a project has no capture of its own, ship an authored diagram
+  under `public/media/diagrams/` and label it a diagram on the card itself.
 
 ---
 
@@ -44,192 +59,151 @@ it is wrong regardless of how good it looks.
 
 - Lead with the **pain**, not the model. "Fabric defects are caught by eye" beats
   "YOLOv8 + PatchCore anomaly detection pipeline".
-- Every project card must show at least one **measured outcome** above the fold of
-  that card. A project with no metric goes below the fold or off the site.
-- Write in first person, plain, declarative. No "passionate about", no "leveraging",
-  no "cutting-edge", no "innovative solutions".
-- British/American spelling: pick American and stay there.
+- Every project card shows at least one **measured outcome** above the fold of that
+  card, and every case study states where the system breaks.
+- Write in first person, plain, declarative. No "passionate about", no
+  "leveraging", no "cutting-edge", no "innovative solutions".
+- British spelling in prose (it matches her CVs); the ATS CV is the exception —
+  see §7.
 - The word "AI" appears in the role, not in every sentence.
 
 ---
 
 ## 4. Motion budget — non-negotiable
 
-There is **no WebGL**. The hero backdrop (`HeroBackdrop.tsx`) is CSS + a small
-inline SVG — corner blooms, a faint detection dot-grid in the right gutter, a
-slow scan sweep, two pulsing outline boxes. A 52k-point Three.js cloud lived
-here until 2026-09 and was cut: it froze the main thread for 150-300 ms on
-mount and starved scroll on weak GPUs. Do not bring a canvas hero back without
-a very good reason and a profile.
+There is **no animation library and no WebGL**.
 
-- **First contentful paint is static DOM.** No hero element blocks paint.
-- Every backdrop layer is `transform`/`opacity` only and **frozen under
-  `prefers-reduced-motion`** (the `.hb-*` rules at the foot of `globals.css`).
-- Always-on animation is deliberately small: the CSS marquees (stack ticker +
-  project strip, paused on hover), the cursor rAF, the scan sweep. Nothing
-  else loops.
-- Total JS shipped to the home route: **at or under 250 KB gzipped**. The floor
-  is React + Next + GSAP/ScrollTrigger + Lenis (~249 KB). If a change pushes
-  past it, split ScrollTrigger or a component to a lazy chunk.
-- Target 60fps scroll on an integrated GPU at 4× CPU throttle. Measure with a
-  Chrome DevTools performance trace, don't assume.
-
-Scroll animation is GSAP + ScrollTrigger. One `useGSAP` scope per component,
-always cleaned up. Never animate `top`/`left`/`width` — transforms and opacity
-only. `withMotion()` gates every tween on reduced motion.
+- Scroll reveals are `src/lib/reveal.ts` — IntersectionObserver plus a CSS
+  transition. GSAP + ScrollTrigger were removed 2026-09: ScrollTrigger measures
+  every trigger on init, which a Lighthouse trace charged 2.4s of styleLayout.
+  Removing it took desktop performance 67 → 92. Do not bring it back.
+- The hero entrance is CSS keyframes (`.hero-in-*` in `globals.css`). The hero's
+  3D depth is CSS `perspective` + `translateZ`, driven by two custom properties
+  the pointer handler writes — no rAF loop.
+- A 52k-point Three.js cloud lived here until 2026-09 and was cut: it froze the
+  main thread for 150-300 ms on mount. Do not bring a canvas hero back without a
+  profile that justifies it.
+- **First contentful paint is static DOM.** Never gate the LCP element behind an
+  opacity animation — it cost 3.7s of render delay on throttled mobile when the
+  hero subhead faded in. Animate transform, leave opacity alone.
+- Always-on animation is deliberately small: two CSS marquees (paused on hover and
+  when off-screen), the hero scan sweep, two pulsing outline boxes. Every animated
+  layer carries `will-change` so the fixed backdrop does not re-rasterise.
+- No `backdrop-filter` except on the nav pill and the agent panel. It was the
+  second-largest style cost on the page.
+- Total JS shipped to the home route: **at or under 220 KB gzipped** (currently
+  ~203, of which ~151 is React + Next). If a change pushes past it, lazy-mount a
+  component — see `AgentMount`, `DecorMount`, `ViewportGate`.
+- Target 60fps scroll on an integrated GPU. Measure with a Lighthouse run or a
+  DevTools trace; do not assume.
 
 ---
 
-## 5. Accessibility floor (WCAG 2.1 AA)
+## 5. Accessibility floor (WCAG 2.1 AA) — currently 100/100, keep it there
 
-- Body text ≥ 4.5:1 against its actual background. The dark theme's muted grey on
-  near-black is the usual failure — check it, don't eyeball it.
-- Every interactive element has a visible `:focus-visible` state. The hero backdrop
-  and the custom cursor layer are `aria-hidden` and not focusable.
-- Headings are a real outline: one `h1` per page, no level skips.
-- All project media has meaningful `alt` describing what the system is doing, not
-  "screenshot".
-- The FAQ accordion is a real disclosure widget (`button` + `aria-expanded`), not a
-  div with a click handler.
-- Colour is never the only carrier of meaning — status pills carry a label too.
+- Body text ≥ 4.5:1 against its **actual painted** background, in both themes.
+  `scripts/_contrast.mjs` was the throwaway audit used to verify this; the trap is
+  that `color-mix()` computes to `oklab(...)`, which a naive parser reads as black.
+- Any scrim over photography uses `black/NN`, never `--color-ink` — ink is paper
+  now, and white captions on a white scrim is how that bug presents.
+- Every interactive element has a visible `:focus-visible` state. The hero
+  backdrop and the cursor layer are `aria-hidden` and not focusable.
+- One `h1` per page, no level skips. All project media has meaningful `alt`
+  describing what the system is doing, not "screenshot".
+- The FAQ is a real disclosure widget (`details`/`summary`).
+- Colour is never the only carrier of meaning.
 
 ---
 
 ## 6. Stack and conventions
 
-- Next.js App Router, TypeScript strict, Tailwind, shadcn/ui for primitives.
-- GSAP + `@gsap/react` for all timeline/scroll work; Lenis for smooth scroll.
-  No Three.js, no r3f — removed 2026-09 (see §4).
-- Server Components by default. `'use client'` only on components that need
-  state, refs or effects — the nav, the accordion, the project grid, the
-  agent, the cursor, the demos row.
+- Next.js App Router, TypeScript strict, Tailwind v4.
+- **Server Components by default.** `'use client'` only for state, refs or
+  effects: the nav, the project grid (filter), the leadership clips, the hero, the
+  agent, the cursor. A section that only needs a scroll reveal is a Server
+  Component wrapped in `<Reveal>` — five sections were converted back that way and
+  it was worth ~200 ms of blocking time.
 - Files: `PascalCase.tsx` for components, `kebab-case.ts` for everything else.
-- No new dependency without saying what it costs in bundle size and why the platform
-  can't do it.
+- No new dependency without saying what it costs in gzipped bundle size and why the
+  platform cannot do it.
 
 ---
 
-## 7. Forbidden
+## 7. The ATS CV
 
-- Borrowed copy. The current build carries GetLayers/Vesper's own lines
-  ("Motion instead of chrome", "It reads your presence"). All of it goes.
-- Invented projects. `Northwind Atlas` and `Clinic Rota` are demo fiction and must be
-  deleted, not adapted.
-- Metrics about the website (particle count, frame budget) presented as career proof
-  above the fold.
-- Any client logo, name or footage not cleared. `magicqc`, `industrial-pose-suite`
-  and `skyresq` carry `confidential` notes — respect them.
+`public/media/Ammara_Noor_CV.pdf` is generated, never hand-edited. `/cv/print`
+renders `src/content/cv.ts`; `scripts/build-cv.mjs` prints it and **fails the run
+if it spills to a second page**.
+
+Rules baked into that route — do not "improve" past them: one column, no tables,
+no images, no icons, black on white, standard headings, dates as `Feb 2026 - Jun
+2026`, ASCII punctuation only, ligatures off (the `fl` ligature turns "MLflow"
+into a glyph a keyword matcher cannot read).
+
+---
+
+## 8. Forbidden
+
+- Any media, project or metric belonging to another engineer.
+- Invented projects, invented testimonials, invented certifications. Her CVs list
+  no certifications — the section does not exist, and adding one would be fiction.
+- Claiming capabilities the CVs do not state. The garment size-measurement side of
+  MagicQC is deliberately not shown: her CV describes the fabric-defect work.
+- Metrics about the website (bundle size, frame budget) presented as career proof.
 - `localStorage` for anything that matters. Theme preference only.
 
 ---
 
-## 8. Definition of done for any section
+## 9. Definition of done for any section
 
 1. Renders from `src/content/`, no hardcoded strings.
 2. Reads correctly at 360px, 768px, 1280px, 1920px.
-3. Passes `prefers-reduced-motion`.
-4. Keyboard-navigable, focus visible, contrast checked.
-5. Lighthouse: Performance ≥ 90 mobile, Accessibility 100.
-6. Screenshotted via Chrome DevTools MCP and actually looked at before you say it works.
+3. Passes `prefers-reduced-motion` — content is simply there, never stuck hidden.
+4. Keyboard-navigable, focus visible, contrast measured in both themes.
+5. Lighthouse: Accessibility 100, Best Practices 100, SEO 100. Performance ≥ 90
+   desktop. Mobile currently sits around 60-65 — React hydration is the ceiling;
+   if you can move it, do, but do not trade away the work to chase it.
+6. Screenshotted and actually looked at before you say it works.
 
 ---
 
+## 10. Current build architecture
 
-## 9. Current build architecture
+### The hero
+`Hero.tsx` (CSS entrance) + `HeroStack.tsx` (the 3D plate composition, rendered
+only at ≥1024px so phones never download the portrait) + `HeroBackdrop.tsx` (a
+fixed CSS/SVG layer: corner blooms, a masked instrument grid in the right gutter,
+one scan sweep, two pulsing detection boxes).
 
-Re-verified against the working tree after the 2026-09 completion passes. This is
-now a description of how the build works, not a migration snapshot. Sections 1–8
-still win any conflict.
+### Sections, in order
+`Hero → TechStrip → ProjectStrip (≥768px only) → Projects → Services →
+Leadership → Achievements → LightSections (About + FAQ) → Testimonials → Closing`.
 
-### The hero backdrop — `HeroBackdrop.tsx`, pure CSS/SVG
-
-A fixed `-z-10` full-viewport layer: ambient corner blooms + a faint starfield
-(both `background:` gradients carried over from the old build), a detection
-dot-grid masked to the right gutter, one slow CSS scan sweep, two pulsing SVG
-outline boxes. No canvas, no rAF loop, no scroll wiring. Frozen entirely under
-`prefers-reduced-motion` by the `.hb-*` block at the foot of `globals.css`.
-
-The 52k-point Three.js cloud (`MorphField` / `MorphStage` / `lib/shapes.ts`)
-was **removed 2026-09** — it froze the main thread on mount and starved scroll
-on weak GPUs. `three`, `@react-three/*` and the bake script are gone from
-`package.json`.
-
-### The project surfaces — strip + grid + `/work`
-
-- **`ProjectStrip.tsx`** — server component, a horizontal CSS-marquee ticker of
-  every project thumbnail plus a curated handful of `/lab` technique cards
-  (`.marquee`, list rendered twice, `translateX(-50%)` loop), right after the
-  hero. `StripItem` is `{id,title,poster,tag,href}` — project cards deep-link
-  to `/work/<slug>`, lab cards to `#lab`. Pause on hover; reduced motion →
-  `overflow-x` scroll.
-- **`Projects.tsx`** — one uniform 3-col grid (no more featured/compact split).
-  Each `Card` overlays a category chip + a metric chip (`chipMetric()` prefers
-  a numeric outcome) on the media, then title/year/problem/tags; the whole
-  cell links to `/work/[slug]` via an `::after` overlay. Client component only
-  because of the domain filter + the stagger reveal. Takes `showAll` — false
-  caps at `HOME_LIMIT` (6) with a "View all" link; `/work` passes it true.
-- **`src/app/work/page.tsx`** — the full grid index, reuses `<Projects showAll>`.
-- **`CardMedia`** picks video → `frames` cross-fade slideshow → image →
-  branded-SVG fallback.
-
-### `Demos.tsx` — "In the lab"
-
-Five short technique clips (`public/media/demos/*`, Hamza's own, ~60 KB each).
-Poster-first; `<video>` only mounts via `IntersectionObserver` and only on a
-hover-capable pointer; plays on hover; poster-only under reduced motion.
-
-### Anchor ids are load-bearing
-
-`#top`, `#work`, `#proof`, `#capabilities`, `#about`, `#faq`, `#testimonials`,
-`#contact`, plus `#light-band` (the inset white-card wrapper — `Nav` observes
-it to invert the pill). ScrollTrigger and the nav target these; renaming one
-silently breaks scroll choreography.
+Anchor ids are load-bearing: `#top`, `#work`, `#capabilities`, `#leadership`,
+`#proof`, `#about`, `#faq`, `#testimonials`, `#contact`, and `#light-band` — the
+nav observes the last one to invert the pill. Renaming one silently breaks
+navigation.
 
 ### Accent ramp — single source
-
-`globals.css` `@theme` owns `--color-a1..a4`. The hero backdrop and the branded
-SVG posters read these; change them there only.
-
-### Route transition
-
-`src/app/template.tsx` remounts on every client navigation, so its children
-replay the `.route-in` entry animation — a page transition with no library.
+`globals.css` `@theme` owns `--color-a1..a4`, `--color-accent-ink` (the only
+accent safe as small text) and `--color-live` (production status only). Change
+them there and nowhere else.
 
 ### The site agent
-
-`src/components/Agent/*` is a **canned** widget, named **Pixel** in its own
-copy (the greeting and "who are you" answer in `agent.ts` self-identify; the
-Hamza-voice answers do not — those stay Hamza's own first-person words,
-unnamed). `useAgent.ts` scores a question against the patterns in
-`src/content/agent.ts` and returns that topic's fixed string. No model in the
-loop, so nothing can be hallucinated; every line still traces to
-`projects.ts` / `site.ts` / the CV (§2). `src/app/api/agent/route.ts`
-scaffolds an LLM tier but is **off** (503) and needs an explicit cost decision
-before it is wired.
+`src/components/Agent/*` is a **canned** widget named Pixel. `useAgent.ts` scores
+a question against the patterns in `src/content/agent.ts` and returns that topic's
+fixed string. No model in the loop, so nothing can be hallucinated.
+`src/app/api/agent/route.ts` scaffolds an LLM tier but is **off** (503) and needs
+an explicit cost decision before it is wired.
 
 ### The audio system
-
-`src/lib/audio.ts` is the single source of truth for every sound: a landing
-ambience bed, an agent voice+music intro, and click SFX on every control —
-see the file's own header comment for the full design. All three are gated
-per page load (not persisted across visits): a reload or re-pasted link is a
-fresh shot, in-memory state only stops the intro replaying on every re-open
-within the *same* load. `AgentPanel`'s message list carries
-`data-lenis-prevent` — without it, Lenis (`SmoothScroll.tsx`) hijacks
-wheel/touch on the whole document and a scroll started inside the panel
-drives the page behind it instead.
+`src/lib/audio.ts`: a landing ambience bed, a short agent intro bed, and click
+SFX. All gated per page load, in-memory only. The voice track was removed
+2026-09 — the intro is music only. `AgentPanel`'s message list carries
+`data-lenis-prevent`; without it Lenis hijacks the wheel over the panel.
 
 ### Dev tooling
-
-- `scripts/shoot.mjs` / `scripts/audit-case-studies.mjs` — puppeteer-core drives
-  the installed Chrome, scrolls each section for real, retries unpainted frames.
-- `scripts/measure.mjs` / `scripts/motion-diff.mjs` — numeric colour/coverage
-  gate and a scroll-pacing timeline.
-- `scripts/draft-fields.mjs` — regenerates `docs/DRAFT-FIELDS.md`.
-
-Harness gotchas: a headless warm-up must **execute JS** or the lazy `MorphField`
-chunk never compiles and the shot is blank; never `next build` against the
-`.next` a dev server is using — it corrupts `.next/dev/types` and fails the type
-check with phantom errors in `validator.ts`; headless software-GL renders
-additive blending unreliably, so judge the field's exact brightness and pacing
-in a real browser, not a screenshot.
+`scripts/build-media-ammara.mjs` (the only path into `public/media/ammara/`),
+`scripts/build-cv.mjs` (the CV PDF), `scripts/shoot.mjs` and
+`scripts/audit-case-studies.mjs` (puppeteer-core against the installed Chrome).
+Never run `next build` against the `.next` a dev server is using.

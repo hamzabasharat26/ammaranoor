@@ -1,24 +1,25 @@
-# hamzabasharat.tech
+# Ammara Noor — portfolio
 
-The portfolio of **Hamza Basharat** — AI / ML Engineer (Computer Vision, RAG & LLM Agents, MLOps), Lahore, Pakistan.
-
-Live at [hamzabasharat.tech](https://hamzabasharat.tech).
+The portfolio of **Ammara Noor** — AI / ML Engineer (computer vision, LLM & RAG
+systems, production ML), Lahore, Pakistan.
 
 ## What this is
 
-A content-driven portfolio built to do two jobs at once: read as production-engineering
-proof to a technical recruiter, and as a direct pitch to a prospective client or freelance
-lead. Every project, metric and claim on the site traces back to a real, shipped system —
-nothing is invented copy. The site includes:
+A content-driven portfolio built for one reader: a technical recruiter or hiring
+manager deciding, in about thirty seconds, whether this person has shipped
+anything real. Every project, metric and claim traces back to a source CV or to
+a public repository — nothing on the site is invented copy.
 
-- A project index with case studies, each carrying at least one measured outcome.
-- A "Pixel" chat widget — a canned, pattern-matched Q&A knowledge base (no LLM in the
-  loop, so nothing it says can be hallucinated), scoped to what Hamza actually builds,
-  ships, charges and can't do.
-- A small three-system audio layer: a one-shot landing ambience, a voice+music intro
-  the first time the chat opens, and click feedback on every control — all gated per
-  page load, never persisted, and fully skipped under `prefers-reduced-motion`.
-- A CV route, an FAQ disclosure widget, and full OpenGraph/JSON-LD/sitemap coverage.
+- Four case studies, each with at least one measured outcome **and** a stated
+  limitation. The limitations are the point: a portfolio with no failure modes
+  reads as inexperience.
+- A leadership section, because the IEEE WIE chair and student-council roles are
+  half the record and a bullet list flattens them.
+- A "Pixel" chat widget — a canned, pattern-matched Q&A knowledge base. No LLM in
+  the loop, so nothing it says can be hallucinated; every answer traces to
+  `src/content/`.
+- An ATS-parseable one-page CV, rendered to PDF from the same data the site uses.
+- Light-first design with a full dark counterpart, WCAG 2.1 AA throughout.
 
 ## Tech stack
 
@@ -27,74 +28,72 @@ nothing is invented copy. The site includes:
 | Framework | [Next.js 16](https://nextjs.org) (App Router, React Server Components, React Compiler) |
 | Language | TypeScript, strict mode |
 | UI | React 19, Tailwind CSS v4 (`@theme` tokens) |
-| Motion | [GSAP](https://gsap.com) + `@gsap/react` (scroll-triggered reveals), [Lenis](https://lenis.darkroom.engineering) (smooth scroll) |
-| Icons | [lucide-react](https://lucide.dev) |
-| Fonts | `next/font` — Geist Sans / Geist Mono |
-| Audio | Native `HTMLAudioElement` + Web Audio API (`AnalyserNode`) — no audio library |
-| Deployment | [Vercel](https://vercel.com) |
-| Dev tooling | `sharp` (image/media processing), `puppeteer-core` (screenshot/QA scripts), ESLint 9 |
+| Motion | CSS animations + IntersectionObserver (`src/lib/reveal.ts`), [Lenis](https://lenis.darkroom.engineering) for smooth scroll on pointer devices |
+| Icons | lucide-react |
+| Media | ffmpeg + sharp, via `scripts/build-media-ammara.mjs` |
+| Hosting | Vercel |
 
-No CMS, no database, no auth — this is a static-first marketing site. The one API
-route (`/api/agent`) is a scaffolded, rate-limited LLM fallback tier that ships
-**off** (returns `503`) until an explicit cost decision turns it on.
+There is **no animation library**. GSAP and ScrollTrigger were removed in 2026-09:
+ScrollTrigger measures every trigger element on init, which a Lighthouse trace
+attributed 2.4s of style/layout to. Reveals are an IntersectionObserver plus a CSS
+transition; the hero entrance is CSS keyframes. That removed ~45 KB gz from every
+route and took the desktop performance score from 67 to 92.
 
-## Content architecture
+There is no WebGL either — see `CLAUDE.md` §4.
 
-`src/content/` is the single source of truth for every string on the site — no copy,
-metric, project title or link is ever hardcoded in a component. To change what the
-site says, edit the data in `src/content/`, not the JSX.
+## Layout
 
 ```
-src/content/
-  site.ts          identity, services, FAQ, skills, experience, awards
-  projects.ts      every case study — problem, approach, outcome, media
-  agent.ts         the Pixel chat's knowledge base (topics, patterns, answers)
-  lab.ts           the "In the lab" technique wall
-  testimonials.ts  empty until real recommendations are pasted in — never a placeholder
-  types.ts         shared content types
+src/
+  app/            routes: /, /work, /work/[slug], /cv, /cv/print, api/agent (off)
+  components/     one component per section; Server Components by default
+  content/        THE source of truth — site.ts, projects.ts, cv.ts, agent.ts
+  lib/            reveal.ts (scroll reveals), motion.ts (magnetic), audio.ts
+public/media/     every shipping asset, built by the scripts below
+docs/drive/       private source material (gitignored) — CVs, raw photos, video
 ```
 
-## Media
+`src/content/` is the single source of truth. No copy, metric, project title or
+link is hardcoded in a component. To change the site, change the data.
 
-All static assets live under `public/media/` — images, video, the agent avatar, sound
-effects, and the CV PDF, one folder, one immutable-cache rule in `next.config.ts`.
-Raw source exports (unprocessed drive footage, alternate CV drafts) never ship; they
-stay out of the repo and get built into `public/media/` by the scripts in `scripts/`.
-
-## Getting started
+## Commands
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
+npm run dev              # dev server
+npm run build            # production build
+npm run lint             # eslint
+
+node scripts/build-media-ammara.mjs   # docs/drive/ammara → public/media/ammara
+node scripts/build-cv.mjs             # /cv/print → public/media/Ammara_Noor_CV.pdf
 ```
 
-```bash
-npm run build    # production build
-npm run start    # serve the production build locally
-npm run lint     # ESLint
+`build-cv.mjs` needs a server running (`npm run dev` first). It fails the run if
+the CV spills onto a second page.
+
+`build-media-ammara.mjs` needs `ffmpeg` and `ffprobe` on PATH. Every video it
+emits is muted (`-an`) and every image ships as both `.jpg` and `.webp`.
+
+## The CV
+
+`public/media/Ammara_Noor_CV.pdf` is not authored by hand. It is printed from
+`/cv/print`, which renders `src/content/cv.ts`. Edit the content file, re-run the
+script, and the download link is current — there is no second copy to fall out of
+date. The print route is deliberately plain (one column, no tables, no images,
+standard headings, ASCII punctuation, ligatures off) so an applicant tracking
+system can parse it.
+
+## Deploying
+
+Vercel, zero config. Set one environment variable so metadata, the sitemap and
+robots.txt resolve to the real origin:
+
+```
+NEXT_PUBLIC_SITE_URL = https://your-domain.com
 ```
 
-> Judge real performance against `npm run build && npm run start` — `next dev` is
-> always slower and not representative of production.
+Without it the site falls back to `https://ammara-noor.vercel.app`.
 
-## Deployment
+## Licence
 
-Deployed on Vercel, zero extra configuration — it auto-detects Next.js. No
-environment variables are required for the site to run; `ANTHROPIC_API_KEY` is
-read by the (currently disabled) `/api/agent` route only if that tier is ever
-turned on.
-
-## Security
-
-- Baseline hardening headers (`X-Content-Type-Options`, `X-Frame-Options`,
-  `Referrer-Policy`, `Permissions-Policy`) on every route — see `next.config.ts`.
-- No cookies, sessions, or tokens anywhere in the app — there's nothing to
-  authenticate, so nothing to secure there.
-- `/api/agent` is IP-rate-limited and globally capped even while disabled, so
-  turning it on later doesn't ship an open, unmetered endpoint by accident.
-- Every external link (`target="_blank"`) carries `rel="noopener noreferrer"`.
-
-## License
-
-Personal portfolio — content and case-study material are Hamza Basharat's own.
-Not licensed for reuse.
+Personal portfolio — the content, case-study material and photography are Ammara
+Noor's own. The code is not licensed for reuse.

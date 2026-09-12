@@ -4,7 +4,7 @@
    Three independent systems, one module, so nothing scatters `new Audio()`
    through components and nothing ever double-plays:
      1. Landing ambience   — one-shot per page load, autoplay-safe
-     2. Agent intro        — voice + music together, once per page load
+     2. Agent intro        — a short music bed, once per page load
      3. Click SFX          — every interactive element, unlimited, via one
                               delegated document-level listener
 
@@ -24,13 +24,11 @@ type Bed = "landing" | "agent" | null;
 const SRC = {
   landing: "/media/sounds/portfolio-music.mp3",
   agentMusic: "/media/sounds/agent-music.mp3",
-  agentVoice: "/media/sounds/agent-voice.mp3",
   click: "/media/sounds/button-press.mp3",
 };
 
 const LANDING_VOLUME = 0.32;
 const AGENT_MUSIC_VOLUME = 0.3;
-const AGENT_VOICE_VOLUME = 0.52;
 const CLICK_VOLUME = 0.5;
 const CLICK_POOL_SIZE = 4;
 
@@ -78,7 +76,6 @@ function fadeOutAndStop(el: HTMLAudioElement | null, ms: number) {
 type Store = {
   landingEl: HTMLAudioElement;
   agentMusicEl: HTMLAudioElement;
-  agentVoiceEl: HTMLAudioElement;
   clickPool: HTMLAudioElement[];
   clickIdx: number;
   currentBed: Bed;
@@ -110,10 +107,6 @@ function getStore(): Store | null {
   agentMusicEl.preload = "none";
   agentMusicEl.volume = 0;
 
-  const agentVoiceEl = new Audio(SRC.agentVoice);
-  agentVoiceEl.preload = "none";
-  agentVoiceEl.volume = AGENT_VOICE_VOLUME;
-
   const clickPool = Array.from({ length: CLICK_POOL_SIZE }, () => {
     const a = new Audio(SRC.click);
     a.preload = "auto";
@@ -124,7 +117,6 @@ function getStore(): Store | null {
   store = {
     landingEl,
     agentMusicEl,
-    agentVoiceEl,
     clickPool,
     clickIdx: 0,
     currentBed: null,
@@ -183,7 +175,7 @@ function armFirstGesture(retry: () => void) {
 }
 
 // ---------------------------------------------------------------------------
-// System 2 — agent intro. Voice + music together, once per page load.
+// System 2 — agent intro. A short music bed, once per page load.
 // A real click gated this call, so autoplay is never blocked here.
 // ---------------------------------------------------------------------------
 /** Returns true if the intro actually started (so the caller knows whether to
@@ -203,21 +195,11 @@ export function startAgentIntro(onEnd?: () => void): boolean {
   s.currentBed = "agent";
 
   const music = s.agentMusicEl;
-  const voice = s.agentVoiceEl;
   music.currentTime = 0;
   music.volume = 0;
   music.play().catch(() => {});
   fadeTo(music, AGENT_MUSIC_VOLUME, 400);
-
-  const onVoicePlaying = () => { s.introPlayedThisLoad = true; };
-  voice.addEventListener("playing", onVoicePlaying, { once: true });
-
-  window.setTimeout(() => {
-    if (s.currentBed !== "agent") return;
-    voice.currentTime = 0;
-    voice.volume = AGENT_VOICE_VOLUME;
-    voice.play().catch(() => {});
-  }, 400);
+  s.introPlayedThisLoad = true;
 
   // Fade the music out over its final ~2s. Read the real duration once it's
   // known; fall back to the measured ~12.6s clip length. onEnd fires only on
@@ -240,8 +222,8 @@ export function startAgentIntro(onEnd?: () => void): boolean {
   return true;
 }
 
-/** Panel closed — mid-intro or not. Stop immediately; a disembodied voice
- *  must never keep talking after the panel is gone. Marks the intro played
+/** Panel closed — mid-intro or not. Stop immediately; a bed must never keep
+ *  playing after the panel is gone. Marks the intro played
  *  for the rest of this load either way, so it never resumes or restarts on
  *  a later open — only a reload earns it a fresh shot. */
 export function stopAgentIntro() {
@@ -249,7 +231,6 @@ export function stopAgentIntro() {
   if (!s) return;
   if (s.currentBed === "agent") {
     fadeOutAndStop(s.agentMusicEl, 300);
-    fadeOutAndStop(s.agentVoiceEl, 300);
     s.currentBed = null;
   }
   s.introPlayedThisLoad = true;
@@ -368,7 +349,7 @@ function installVisibilityHandling() {
   if (!s || s.visibilityInstalled || !isBrowser()) return;
   s.visibilityInstalled = true;
   document.addEventListener("visibilitychange", () => {
-    const beds = [s.landingEl, s.agentMusicEl, s.agentVoiceEl];
+    const beds = [s.landingEl, s.agentMusicEl];
     if (document.hidden) {
       beds.forEach((el) => {
         if (!el.paused) {
@@ -403,8 +384,8 @@ export function initAudio() {
 // "is the intro playing", which needs none of this.
 //
 // The graph MUST terminate at ctx.destination or the routed element goes
-// silent — routing agentVoiceEl through an AnalyserNode with no path to
-// destination would mute the intro voice while still "playing" it.
+// silent — routing the music bed through an AnalyserNode with no path to
+// destination would mute it while still "playing" it.
 // ---------------------------------------------------------------------------
 export function attachAnalyser(onLevel: (level: number) => void): () => void {
   const s = getStore();
@@ -417,11 +398,8 @@ export function attachAnalyser(onLevel: (level: number) => void): () => void {
       const analyser = ctx.createAnalyser();
       analyser.fftSize = 256;
       analyser.smoothingTimeConstant = 0.75;
-      // Route both the voice and the music bed through the same analyser, so
-      // the glow reflects whichever is actually audible.
-      const voiceSrc = ctx.createMediaElementSource(s.agentVoiceEl);
+      // The music bed drives the glow — it is the only thing the intro plays.
       const musicSrc = ctx.createMediaElementSource(s.agentMusicEl);
-      voiceSrc.connect(analyser);
       musicSrc.connect(analyser);
       analyser.connect(ctx.destination); // <- the part that keeps it audible
       s.audioCtx = ctx;

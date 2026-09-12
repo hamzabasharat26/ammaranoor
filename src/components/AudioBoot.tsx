@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { armLandingMusic, initAudio } from "@/lib/audio";
 
 /**
  * Mounted once near the root. Renders nothing — it just starts the audio
@@ -22,8 +21,18 @@ export default function AudioBoot() {
   const pathname = usePathname();
 
   useEffect(() => {
-    initAudio();
-    if (pathname === "/" || pathname.startsWith("/work")) armLandingMusic();
+    // Imported here, not at module scope: the audio manager is ~5 KB gz that
+    // nothing needs before first paint, and the home route sits against a
+    // 250 KB budget (CLAUDE.md §4).
+    let cancelled = false;
+    import("@/lib/audio").then(({ initAudio, armLandingMusic }) => {
+      if (cancelled) return;
+      initAudio();
+      if (pathname === "/" || pathname.startsWith("/work")) armLandingMusic();
+    });
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,161 +1,154 @@
-import type { Award, Certification, Photo, Role, Workshop } from './types'
+import type { Award, Leadership, Photo, Role } from './types'
 
 // ---------------------------------------------------------------------------
-// Identity, positioning and contact. One place. Nothing here is invented -
-// it all comes from Hamza_BasharatCV.pdf.
+// Identity, positioning and contact. One place. Nothing here is invented — it
+// all comes from the three source CVs in docs/drive/ammara/:
+//   Ammara_Noor_CV.pdf · Ammara_Noor_CV (3).pdf · Ammara Noor (1).pdf
 //
-// POSITIONING DECISION (2026-08): the spine of this site is
-// "AI / Computer Vision Engineer who ships to production". The WebGL hero is
-// evidence of real-time rendering skill, NOT the pitch. Every headline,
-// meta description and CTA must serve that spine.
+// POSITIONING: the spine of this site is "AI / ML engineer who takes a system
+// from data collection to a deployment that runs without her". Computer vision
+// is the deepest column; LLM/RAG is the second. Every headline, metric and CTA
+// serves that spine. Leadership is the differentiator, not the pitch.
 // ---------------------------------------------------------------------------
+
+/** Canonical origin. Set NEXT_PUBLIC_SITE_URL in Vercel once a domain is live;
+ *  the fallback is the default deployment so metadata never resolves to null. */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://ammara-noor.vercel.app'
 
 export const site = {
-  name: 'Hamza Basharat',
-  /** The single label the whole site defends. Broadened 2026-09: the CV backs
-   *  CV, RAG/LLM and MLOps work, not vision alone — leading with "Computer
-   *  Vision" alone was underselling half the portfolio. */
+  name: 'Ammara Noor',
+  /** The single label the whole site defends. */
   role: 'AI / ML Engineer',
   /** Sub-role for meta and the CV route. Order = depth. */
-  roleLong: 'AI / ML Engineer · Computer Vision, RAG & LLM Agents, MLOps',
+  roleLong: 'AI / ML Engineer · Computer Vision, LLM & RAG Systems, Production ML',
 
   /**
-   * HERO HEADLINE. The pain, client-side: models that work in a notebook and
-   * die on contact with production. Must still be a line only Hamza could
-   * write — the proof (factory floor) is what makes it his.
+   * HERO HEADLINE. Only she can say this line: she collected and labelled the
+   * dataset on the mill floor herself, then installed the system on the line.
    */
-  headline: 'AI that survives production — not notebooks.',
+  headline: 'I collect the data, train the model, and install it on the line.',
   /**
-   * Hero sub — ~34 words. Names the range and the differentiator; the domains
-   * list is trimmed so it holds three lines under the masthead.
+   * Hero sub — names the range and the evidence, in her own CV's terms.
    */
   subhead:
-    'I build computer-vision pipelines, RAG agents and the automation around them — from raw dataset to a deployment you can monitor and hand off. Shipped into manufacturing QC, industrial safety, UAV perception and enterprise tooling.',
+    'Computer vision and LLM systems, end to end. I took a fabric inspection line from fully manual to 95% automated defect detection, shipped retrieval pipelines into live client applications, and rebuilt PatchCore from the paper to 99.56% AUROC.',
   /**
-   * About-section opening line, in two parts so the middle clause can be set
-   * in the accent gradient. A statement, not a summary.
+   * About-section opening line, in three parts so the middle clause can be set
+   * in the accent gradient.
    */
   aboutLede: {
-    before: 'A model that stays in a notebook is worth nothing to you. I build the ones that ',
-    accent: 'reach production',
-    after: ' — and keep running after the hand-off.',
+    before: 'A model that stops at the notebook has not solved anything. I take mine ',
+    accent: 'onto the production floor',
+    after: ' — and stay until the operators can run it without me.',
   },
 
   location: 'Lahore, Pakistan',
-  relocation: 'Open to relocation',
-  availability: 'Open to full-time AI/ML roles, contract engagements and freelance projects',
-  /** Real client geography — freelance/contract, not fabricated headcount. */
-  clients: 'Freelance and contract work with teams in the US, Canada and Pakistan.',
+  relocation: 'Open to Lahore / Islamabad / Karachi / remote',
+  availability: 'Available immediately for full-time AI/ML engineering roles',
+  /** What the proof section leads with — leadership reach, not client count. */
+  reach:
+    'Chair of IEEE Women in Engineering at NUTECH and Chief Coordinator of the student council, alongside the engineering.',
 
-  email: 'hamzabasharat2004@gmail.com',
-  phone: '+92 300 6547302',
+  email: 'ammaran620@gmail.com',
+  phone: '+92 317 212 9674',
 
   links: {
-    linkedin: 'https://www.linkedin.com/in/hamzabasharat26',
-    github: 'https://github.com/hamzabasharat26',
-    recommendations:
-      'https://www.linkedin.com/in/hamzabasharat26/details/recommendations/?detailScreenTabIndex=0',
-    cv: '/media/Hamza_Basharat_AI_CV.pdf',
+    linkedin: 'https://www.linkedin.com/in/ammaranoorkhan',
+    github: 'https://github.com/ammaran620-de',
+    cv: '/media/Ammara_Noor_CV.pdf',
   },
 
   /**
-   * Headline numbers for the strip under the hero.
-   * These REPLACE the current "91k particles / 8.3ms / 60fps" strip, which
-   * describes the website rather than the engineer. Keep the frame-budget
-   * numbers if you like them, but not above the fold.
+   * Headline numbers for the strip under the hero. Every one is verbatim from
+   * a CV. Four is the grid; a fifth breaks it.
    */
   proofStrip: [
-    // Re-worded 2026-09 on request: lead MagicQC with the platform it actually
-    // is (web + desktop, delivered, in production), not a single garment/day
-    // count — the number still lives on the project card, where there's room
-    // to back it up.
-    { value: 'Delivered', label: 'MagicQC — web + desktop, in production', context: 'Computer vision, end to end' },
-    { value: '90%+', label: 'Measurement accuracy', context: 'MagicQC' },
-    { value: '0.81', label: 'mAP50, fabric defect', context: 'YOLO + PatchCore' },
-    // Context kept to one line — the two-line wrap was what pushed the strip
-    // into the fold. Both real "1st" placements folded into one tile rather
-    // than adding a 5th and breaking the 4-up grid.
-    { value: '1st', label: 'National podium finishes ×2', context: 'IEEE Hackathon · ICAT Robotics' },
+    { value: '95%', label: 'Defect detection accuracy', context: 'Live production line, held-out test set' },
+    { value: '99.56%', label: 'AUROC on MVTec AD', context: 'PatchCore rebuilt from the paper' },
+    { value: '~1,600', label: 'Images collected on-site', context: 'Labelled by hand at the mill' },
+    { value: '1st', label: 'ICAT National Robotics', context: 'National competition, 2025' },
   ],
 
   /**
-   * SERVICES. Reframed from generic web-dev to what the CV can actually back.
-   * Three is the right number; a fourth dilutes.
+   * CAPABILITIES. Three columns, each backed by shipped work — the `evidence`
+   * slugs resolve to real case studies.
    */
   services: [
     {
       n: '01',
-      title: 'Production Vision Systems',
+      title: 'Production Computer Vision',
       blurb:
-        'Detection, segmentation, pose and anomaly detection — from dataset curation to a monitored deployment on the hardware you already run. You get a system, not a notebook.',
-      evidence: ['magicqc', 'fabric-defect-detection', 'ppe-safety-detection'],
+        'Detection, classification, segmentation and anomaly detection — from collecting the dataset on your floor to a system running on your camera. Known defects and the ones nobody labelled yet.',
+      evidence: ['magicqc-fabric-defect', 'anomaly-detection-mlops'],
     },
     {
       n: '02',
-      title: 'Edge & Real-Time Inference',
+      title: 'LLM & RAG Systems',
       blurb:
-        'Models that hold accuracy inside an embedded compute budget. OAK-1W / DepthAI, ONNX, quantisation, and the throughput trade-offs stated up front — not discovered in production.',
-      evidence: ['fabric-defect-detection', 'industrial-pose-suite', 'skyresq'],
+        'Ingestion, embeddings, vector retrieval and generation, wired into applications people already use. Chunking and retrieval tuned against real failure cases, not benchmark scores.',
+      evidence: ['rag-document-pipelines'],
     },
     {
       n: '03',
-      title: 'RAG Agents & Automation',
+      title: 'On-Site Deployment & Delivery',
       blurb:
-        'Retrieval pipelines and agents that cite their sources, plus the workflow automation around them — served as REST APIs into the backends you already have: Laravel, React, MySQL.',
-      evidence: ['enterprise-rag-agents', 'cv-recruiter-rag'],
+        'Camera and hardware integration, the API, the operator dashboard, the install, and the rollout with the people who have to use it. I am comfortable in the field, not only at a desk.',
+      evidence: ['magicqc-fabric-defect', 'uav-surveillance'],
     },
   ],
 
   /** SEO. One canonical description; do not let each page invent its own. */
   seo: {
-    url: 'https://hamzabasharat.tech',
-    title: 'Hamza Basharat — AI / ML Engineer',
+    url: SITE_URL,
+    title: 'Ammara Noor — AI / ML Engineer',
     description:
-      'AI / ML Engineer in Pakistan shipping production systems: MagicQC garment QC (500+/day on AWS, 90%+ accuracy), edge defect detection at 0.81 mAP50 on OAK-1W, UAV perception for NESCOM, RAG agents into live Laravel/React backends. PyTorch · YOLO · LangGraph · Docker.',
+      'AI / ML Engineer in Lahore, Pakistan. Fabric defect detection at 95% accuracy on a live production line (YOLOv8 + PatchCore), PatchCore reproduced from the paper to 99.56% AUROC on MVTec AD, RAG pipelines in production client applications, UAV perception for NESCOM. PyTorch · YOLOv8 · FastAPI · Docker.',
     keywords: [
       'AI ML engineer',
       'machine learning engineer',
       'computer vision engineer',
+      'deep learning engineer',
       'RAG engineer',
-      'LLM agents engineer',
+      'LLM applications engineer',
       'MLOps engineer',
       'AI engineer Pakistan',
+      'AI engineer Lahore',
       'production machine learning',
-      'YOLO object detection',
-      'edge AI OAK-1W',
-      'LangGraph RAG pipelines',
-      'AI automation engineer',
-      'freelance AI engineer',
+      'YOLOv8 object detection',
+      'PatchCore anomaly detection',
+      'PyTorch engineer',
+      'FastAPI machine learning',
+      'women in engineering IEEE',
     ],
     ogImage: '/og/default.jpg',
   },
 
   /**
-   * FAQ. Required as a disclosure widget by CLAUDE.md §5. This is the highest-
-   * leverage sales surface for cold outreach traffic — it pre-answers the
-   * objections that decide the deal. The "what can you not do" entry is the
-   * one that makes the other four believable.
+   * FAQ. A disclosure widget (CLAUDE.md §5) and the highest-leverage surface
+   * for a recruiter scanning in 30 seconds. The "what can you not do" entry is
+   * the one that makes the other four believable.
    */
   faq: [
     {
-      q: 'How do engagements usually start?',
-      a: 'A feasibility read on a sample of your own data, at no cost — you get a straight yes or no on whether it will work. Then a scoped, fixed-price pilot of two to three weeks. A full build only after the pilot has proven the approach on your data, not a demo set.',
+      q: 'Are you available, and where?',
+      a: 'Immediately, for full-time AI/ML engineering roles. I am based in Lahore and open to Lahore, Islamabad, Karachi or remote. I graduate from NUTECH in 2026 and have been working in industry alongside the degree since 2025.',
     },
     {
-      q: 'What does a project cost?',
-      a: 'Pilots start at $1,500. Full deployments run $5,000–15,000 depending on scope. Priced per project, not hourly — the number is fixed the moment we agree it, and it covers the hand-off, not just the model.',
+      q: 'What have you actually put into production?',
+      a: 'MagicQC — fabric defect detection running on a live line at 95% accuracy on a held-out test set. I collected and labelled the ~1,600-image dataset myself on the mill floor because none existed, trained YOLOv8 for three known defect classes, added PatchCore for the unseen ones, and installed the whole pipeline: camera capture, OpenCV preprocessing, both models, Flask API, React operator dashboard. At Evolvian I shipped RAG pipelines into client-facing applications that are live now.',
     },
     {
-      q: 'You are not in our timezone — how does that work?',
-      a: 'Calls happen in your hours. Work ships in weekly increments, so you see progress instead of a reveal at the end. The pilot exists precisely so you can test how we work together on something small before committing to a build.',
+      q: 'Vision or LLMs — which are you actually deep in?',
+      a: 'Vision is deeper. Detection, anomaly detection and the deployment around them are where most of my production hours are, and where the measurable results are. LLM and RAG work is real but younger: ingestion, embeddings, vector retrieval, chunking strategy and OCR chained into automated document pipelines at Evolvian. I would rather you know which is which than find out later.',
     },
     {
-      q: 'Do you work alongside an in-house team?',
-      a: 'Usually, yes. Most of this is the specialist vision or retrieval piece a team does not want to pause its roadmap to build — I take that part and hand back clean, documented interfaces.',
+      q: 'How do you know a model works before it goes live?',
+      a: 'I evaluate against the failure the system exists to prevent, not the benchmark. For the anomaly pipeline that meant 99.56% AUROC on MVTec AD carpet with the misses named out loud — 87 of 89 defects caught, 26 of 28 good pieces passed, and both misses were stray threads. For the fabric line it meant hunting edge cases under real production light and re-tuning thresholds to cut false positives, because an inspector who stops trusting the alarm turns it off.',
     },
     {
       q: 'What can you not do?',
-      a: 'I am a vision, ML and retrieval specialist — not a full data-engineering or DevOps team. I build the model and the inference service and hand off clean interfaces; I do not run your data warehouse or own your cloud estate. Where a project needs that, I say so up front and help you scope it out.',
+      a: 'I am not a data-engineering or platform team. I train and serve models and build the API and dashboard around them; I do not run your data warehouse or own your cloud estate. My Docker and Linux are working-level, not SRE-level, and I have not run large-scale distributed training — my optimisation work has been single-node latency and export, such as profiling 535 ms/image on CPU against the 33 ms a 30 FPS line needs and mapping the ONNX/INT8 path to close it.',
     },
   ],
 
@@ -170,38 +163,41 @@ export const site = {
 export const experience: Role[] = [
   {
     org: 'Robionix Technologies',
-    title: 'AI & Computer Vision Engineer',
-    location: 'Islamabad, Pakistan',
-    start: 'Aug 2024',
-    end: 'Jul 2026',
+    title: 'AI / Computer Vision Engineer (Part-Time)',
+    location: 'Lahore, Pakistan',
+    start: 'Feb 2026',
+    end: 'Jun 2026',
     highlights: [
-      { text: 'Led MagicQC end to end — an automated size-measurement system for apparel production, live on AWS EC2 at 500+ items/day and 90%+ accuracy. Showcased at My Karachi Expo and TextileAsia, Lahore.', projectSlug: 'magicqc' },
-      { text: 'Shipped a detection and pose-estimation suite hitting 92%+ mAP at 15+ FPS on constrained edge hardware.', projectSlug: 'industrial-pose-suite' },
-      { text: 'Built enterprise RAG and conversational agents served as REST APIs into Laravel, React and MySQL production backends.', projectSlug: 'enterprise-rag-agents' },
-      { text: 'Automated tag, label and document OCR feeding downstream QC reporting and inventory records.' },
-      { text: 'Used diffusion-based augmentation and ViT/VLM fine-tuning to close class gaps in scarce industrial datasets.' },
+      { text: 'Built and deployed MagicQC, a fabric defect detection product, from scratch to a live production line — YOLOv8 for three known defect classes paired with PatchCore for defects absent from the training set.', projectSlug: 'magicqc-fabric-defect' },
+      { text: 'Went on-site to a textile mill and collected and labelled ~1,600 images myself on the production floor, because there was no existing dataset.', projectSlug: 'magicqc-fabric-defect' },
+      { text: 'Installed and integrated the full system — camera capture, OpenCV preprocessing, both models, Flask API, React dashboard, Dockerised — and worked with mill operators through rollout.' },
+      { text: 'Re-tuned thresholds against real production conditions to cut false positives rather than chase benchmark accuracy.' },
+      { text: 'Exhibited at the 32nd Textile Asia Expo; Nishat Mills, Gul Ahmed and Sapphire requested evaluations. Presented the technology and business case at a national industry open house.' },
     ],
   },
   {
-    org: 'Essenceware Technologies',
-    title: 'AI Engineer (Contract)',
-    location: 'Pakistan',
+    org: 'Evolvian Softwares',
+    title: 'Full-Stack AI Developer',
+    location: 'Lahore, Pakistan',
+    start: 'Aug 2025',
+    end: 'Jan 2026',
+    highlights: [
+      { text: 'Shipped production RAG pipelines end to end — document ingestion, embeddings, vector retrieval, LLM generation — into live client applications.', projectSlug: 'rag-document-pipelines' },
+      { text: 'Rebuilt chunking and retrieval strategy after diagnosing why standard metrics did not predict real failures, raising output consistency across messy client documents.', projectSlug: 'rag-document-pipelines' },
+      { text: 'Collapsed a multi-step manual review process into one automated pipeline by chaining LLM text processing, OCR and YOLOv8 detection.' },
+      { text: 'Built the REST APIs and React dashboards, with role-based auth and live updates, that turned model output into something end users could act on.' },
+      { text: 'Owned features from client requirement to deployed release — scoping, build, troubleshooting, delivery — working directly with clients.' },
+    ],
+  },
+  {
+    org: 'National Development Complex (NESCOM)',
+    title: 'AI & UAV Engineering Intern',
+    location: 'Islamabad, Pakistan',
     start: 'Jul 2025',
     end: 'Sep 2025',
     highlights: [
-      { text: 'Trained, deployed and handed off real-time PPE and workplace safety detection with inference dashboards and model versioning.', projectSlug: 'ppe-safety-detection' },
-      { text: 'Integrated a real-time pose-estimation and activity-monitoring module into the Essenceware product stack.' },
-    ],
-  },
-  {
-    org: 'NESCOM, National Development Complex',
-    title: 'AI & UAV Engineer (Intern)',
-    location: 'Islamabad, Pakistan',
-    start: 'Jun 2025',
-    end: 'Sep 2025',
-    highlights: [
-      { text: 'Built detection and tracking pipelines and Gazebo simulation for SkyResQ, an autonomous UAV disaster-response perception system.', projectSlug: 'skyresq' },
-      { text: 'Presented results directly to Pakistani government stakeholders evaluating the system for national emergency preparedness.' },
+      { text: 'Built a UAV surveillance system performing person tracking and vehicle detection on live aerial video feeds.', projectSlug: 'uav-surveillance' },
+      { text: 'Delivered a smart parking dashboard rendering live detections and slot occupancy from the raw detection stream.', projectSlug: 'uav-surveillance' },
     ],
   },
 ]
@@ -211,115 +207,117 @@ export const education = {
   institution: 'National University of Technology (NUTECH)',
   location: 'Islamabad',
   years: '2022 - 2026',
+  grade: 'CGPA 3.44 / 4.00',
+  coursework:
+    'Machine learning, deep learning, computer vision, databases, data structures and algorithms, object-oriented programming.',
 }
 
 export const awards: Award[] = [
-  { place: '1st', title: 'Dock Vision AI', event: 'IEEE Hackathon', year: '2024', projectSlug: 'dock-vision-ai' },
-  { place: '1st', title: 'ICAT National Robotics Competition', event: 'ICAT', year: '' },
-  { place: 'Runner-up', title: 'National AI Sprint (NAIS)', event: 'National Centre of Physics', year: '2025' },
-  // TextileAsia entry — from the 5 exhibition photos in
-  // docs/drive/TextileAsia_Lahore/. What the badge and banners actually say:
-  // "TextileAsia, 32nd Edition", "South Asia's Largest Textile Industry
-  // Exhibition & Conference", "04-06 July", "Lahore Expo Centre, Pakistan",
-  // "Student / National University of Technology (NUTECH) / Exhibitor". The
-  // MagicQC booth banner reads "AI-Based Automated Garment Size Measurement
-  // System".
-  // DRAFT for Hamza: (1) confirm the year — the badge shows "04-06 July" but
-  // the year digits are not legible in the photos (2025 or 2026?). (2) confirm
-  // whether this was purely an exhibitor showcase or carried any placement /
-  // recognition. Leaving `place: 'Exhibitor'` and `year: ''` until confirmed
-  // rather than guessing.
-  { place: 'Exhibitor', title: 'MagicQC at TextileAsia', event: '32nd Edition · Lahore Expo Centre · NUTECH', year: '', projectSlug: 'magicqc' },
-]
-
-export const certifications: Certification[] = [
-  { name: 'AWS Certified Machine Learning Engineer - Associate', issuer: 'Amazon Web Services' },
-  { name: 'AI & ML Engineering Professional Certificate', issuer: 'Microsoft' },
-  { name: 'Advanced Computer Vision with TensorFlow', issuer: 'DeepLearning.AI' },
-  { name: 'Exploratory Data Analysis for Machine Learning', issuer: 'IBM' },
-  { name: 'Azure AI / Computer Vision', issuer: 'Microsoft' },
-  { name: 'LangChain for LLM Application Development', issuer: 'DeepLearning.AI' },
-  { name: 'Introduction to Embedded Machine Learning', issuer: 'Edge Impulse' },
-  { name: 'Claude 101 & AI Fluency Framework Foundations', issuer: 'Anthropic' },
-  { name: 'First Principles of Computer Vision', issuer: 'University of Colorado Boulder' },
-  { name: 'Python for Everybody', issuer: 'University of Michigan' },
-  // DRAFT for Hamza: confirm this is distinct from "Introduction to Embedded
-  // Machine Learning" above (same issuer, Edge Impulse) — could be the same
-  // course under a different name. Keeping both until you confirm.
-  { name: 'Edge AI', issuer: 'Edge Impulse' },
-  { name: 'AI for All: From Practice to Gen AI', issuer: 'NVIDIA' },
-  { name: 'Prompt Engineering', issuer: 'Google' },
+  { place: '1st', title: 'ICAT National Robotics Competition', event: 'ICAT', year: '2025' },
+  { place: 'Runner-up', title: 'NAIS National AI Seminar', event: 'NAIS', year: '2025' },
+  { place: 'Fellow', title: 'Millennium Fellowship', event: 'United Nations Academic Impact', year: '' },
+  { place: 'Ambassador', title: '6th International Student Convention & Expo', event: 'Islamabad · 3-6 May', year: '2026' },
+  { place: 'Exhibitor', title: 'MagicQC at the 32nd Textile Asia Expo', event: 'Lahore Expo Centre', year: '2026', projectSlug: 'magicqc-fabric-defect' },
 ]
 
 /**
- * Teaching / speaking. Every field below is transcribed from the workshop's
- * own flyer (docs/drive/Workshop At Lahore...) — nothing is invented. Hamza
- * was on the Robionix engineering team that delivered it.
+ * Leadership and outreach. Not decoration — this is the half of the record a
+ * CV bullet list flattens, and it is what separates her from an equally
+ * qualified engineer. Every entry is CV-backed except where noted.
  */
-export const workshops: Workshop[] = [
+export const leadership: Leadership[] = [
   {
-    title: 'CPD Workshop — Applications of Vision AI in Manufacturing Industries',
-    host: 'Punjab Tianjin University of Technology (PTUT), Lahore · conducted by NUTECH in collaboration with Robionix Technologies',
-    venue: 'PTUT Township Campus, Lahore',
-    dates: '2-3 July 2026',
-    role: 'Instructor — Robionix engineering team, with Prof. Dr. Awais Yasin (Founder & CEO, Robionix)',
-    curriculum: [
-      'Day 1: computer vision and AI fundamentals, YOLO detection and classification, Python/Django web APIs, MySQL from shop-floor to manager PC, React/Next.js dashboards, real-time industrial camera interfacing.',
-      'Day 2: a full fabric-defect-detection build — dataset preparation and training, back-end API configuration, real-time ERP quality dashboards, the automated textile pipeline demo, and a prompt-engineering session.',
-    ],
-    image: '/media/workshop-lahore.jpg',
-    imageAlt: 'Hamza presenting the Vision AI workshop at a lectern in a PTUT computer lab, slides and the workshop banner behind him.',
-    photos: [
-      { src: '/media/teaching/podium-1.jpg', alt: 'Hamza presenting from the lectern to attendees at rows of workstations in the PTUT computer lab.' },
-      { src: '/media/teaching/podium-2.jpg', alt: 'Hamza mid-talk at the lectern, an attendee in the foreground following along.' },
-      { src: '/media/teaching/certificate.jpg', alt: 'Certificate of appreciation from PTUT naming Hamza Basharat for the two-day CPD workshop, signed by the Vice Chancellor.', tag: 'PTUT · signed by the VC' },
-      { src: '/media/teaching/badge.jpg', alt: 'Hamza’s workshop trainer badge: "Application of Vision AI in Manufacturing Industries — Trainer — 2-3 July 2026".', tag: 'Trainer credential' },
-    ],
+    role: 'Chair, IEEE Women in Engineering',
+    org: 'NUTECH Student Branch',
+    period: '2025 - 2026',
+    blurb:
+      'I lead the university’s Women in Engineering affinity group — the events, the committee and the turnout — under the IEEE Islamabad Section.',
+    media: {
+      kind: 'clip',
+      poster: '/media/ammara/ieee-day.jpg',
+      webm: '/media/ammara/ieee-day.webm',
+      mp4: '/media/ammara/ieee-day.mp4',
+      alt: 'The IEEE Day 2025 stage line-up at the Islamabad Section event, the WIE and Region 10 banner behind the committee.',
+    },
+  },
+  {
+    role: 'Chief Coordinator',
+    org: 'NUTECH Student Council (NSC)',
+    period: '2025 - 2026',
+    blurb:
+      'Elected to coordinate the student council across the university’s societies and events.',
+    media: {
+      kind: 'clip',
+      poster: '/media/ammara/nsc-result.jpg',
+      webm: '/media/ammara/nsc-result.webm',
+      mp4: '/media/ammara/nsc-result.mp4',
+      alt: 'The moment the NUTECH Student Council result is announced in the main auditorium, the hall on its feet.',
+    },
+  },
+  {
+    role: 'Millennium Fellow',
+    org: 'United Nations Academic Impact',
+    period: '',
+    blurb:
+      'Selected for the UNAI and MCN leadership programme for students running social-impact projects on their campuses.',
+  },
+  {
+    role: 'Ambassador',
+    org: '6th International Student Convention & Expo 2026',
+    period: 'May 2026',
+    blurb:
+      'Recognised for outstanding ambassadorship at the convention in Islamabad, 3-6 May 2026.',
+    media: {
+      kind: 'image',
+      poster: '/media/ammara/isce-ambassador.jpg',
+      alt: 'The 6th International Student Convention & Expo shield beside the certificate of participation awarded to Ammara Noor for her ambassadorship.',
+    },
   },
 ]
 
 /**
- * Field / credibility photos for the Proof section. All from real events —
- * TextileAsia (Lahore Expo Centre), the ICAT robotics final, client meetings
- * at the expo. Nothing staged, nothing stock (CLAUDE §7).
+ * Field / credibility photos. All from real events — Textile Asia at the
+ * Lahore Expo Centre, IEEE Day, the ICAT robotics build, university meetings.
+ * Nothing staged, nothing stock (CLAUDE §7).
  */
-// Six DISTINCT frames — no near-duplicates. ta-1/ta-3/ta-5 were three near-
-// identical solo portraits (kept ta-1); ta-2 and expo-team were the same team
-// photo (kept ta-2). Natural aspect ratios are preserved in the layout so no
-// face or banner is cropped off.
 export const gallery: Photo[] = [
-  { src: '/media/proof/ta-1.jpg', alt: 'Hamza on the MagicQC stand at TextileAsia, Lahore Expo Centre.', tag: 'TextileAsia · Lahore', aspect: '2/3' },
-  { src: '/media/proof/ta-2.jpg', alt: 'The Robionix team on the MagicQC stand at TextileAsia, Lahore Expo Centre.', tag: 'The team · TextileAsia', aspect: '3/2' },
-  { src: '/media/proof/ta-4.jpg', alt: 'Hamza demonstrating the MagicQC size-measurement rig to a visitor at the TextileAsia stand.', tag: 'MagicQC demo · TextileAsia', aspect: '3/2' },
-  { src: '/media/fabric/machine.jpg', alt: 'The AI-enabled fabric-defect inspection rig on the mill floor — camera and lighting over the fabric roll, operator PC alongside.', tag: 'Defect-detection rig · on the floor', aspect: '16/9' },
-  { src: '/media/proof/icat-robot.jpg', alt: 'The autonomous sorting robot Hamza’s team built for the ICAT National Robotics Competition, bins labelled metal / plastic / unknown.', tag: 'ICAT robotics · 1st', aspect: '4/3' },
-  { src: '/media/proof/client-talk.jpg', alt: 'Hamza in a working discussion with a client at the exhibition table.', tag: 'Client meeting · Lahore', aspect: '3/2' },
+  { src: '/media/ammara/textile-asia-stand.jpg', alt: 'Ammara at the Textile Asia 2026 exhibition wall at the Lahore Expo Centre.', tag: 'Textile Asia 2026 · Lahore', aspect: '3/4' },
+  { src: '/media/ammara/magicqc-team.jpg', alt: 'Ammara with the MagicQC exhibitor team under the stand canopy at Textile Asia.', tag: 'MagicQC stand · the team', aspect: '3/2' },
+  { src: '/media/ammara/ai-competition-award.jpg', alt: 'Ammara accepting a competition certificate on stage for an AI application build.', tag: 'AI application competition', aspect: '3/4' },
+  { src: '/media/ammara/rector-ai-programs.jpg', alt: 'Students and faculty meeting the Rector of NUTECH on the steps of the campus to discuss AI programmes at the university.', tag: 'AI programmes · NUTECH', aspect: '3/2' },
+  { src: '/media/ammara/ieee-day-team.jpg', alt: 'The IEEE Women in Engineering committee at IEEE Day, Islamabad Section, in front of the IEEE Day Region 10 banner.', tag: 'IEEE Day · WIE committee', aspect: '3/4' },
+  { src: '/media/proof/icat-robot.jpg', alt: 'The autonomous sorting robot built for the ICAT National Robotics Competition, bins labelled metal / plastic / unknown.', tag: 'ICAT robotics · 1st place', aspect: '4/3' },
+  { src: '/media/ammara/textile-asia-portrait.jpg', alt: 'Ammara at the Textile Asia 2026 backdrop, thread cones mounted around the lettering.', tag: 'Textile Asia 2026', aspect: '3/4' },
+  { src: '/media/proof/client-talk.jpg', alt: 'Ammara in a working discussion with visitors at the exhibition table during Textile Asia.', tag: 'Client meeting · Textile Asia', aspect: '3/2' },
 ]
 
 /**
- * Skills, grouped the way a hiring manager reads them - by what the skill
- * lets you DO, not by vendor. Order within each group is by depth, not
- * alphabet. Never render this as a wall of logo badges.
+ * Skills, grouped by what the skill lets you DO, not by vendor. Order within
+ * each group is by depth, not alphabet. Never render this as a wall of logos.
  */
 export const skillGroups = [
   {
-    title: 'Computer Vision & Video Analytics',
-    items: ['YOLOv5/v8/v11/26', 'OpenCV', 'PatchCore', 'Vision Transformers (ViT)', 'Vision-Language Models', 'PaddleOCR', 'Tesseract', 'Tracking', 'Pose estimation', 'Segmentation', 'Anomaly detection'],
+    title: 'Computer Vision',
+    items: ['YOLOv8 detection', 'Anomaly detection (PatchCore)', 'Image classification', 'Segmentation', 'Object tracking', 'OCR', 'Real-time video analytics', 'Image processing'],
   },
   {
-    title: 'Deep Learning & Generative AI',
-    items: ['PyTorch', 'TensorFlow', 'Keras', 'Hugging Face Transformers', 'Diffusers', 'Diffusion models', 'Transfer learning', 'Fine-tuning', 'Data augmentation'],
+    title: 'LLM & Generative AI',
+    items: ['Retrieval-augmented generation', 'Embeddings', 'Vector search', 'Chunking & retrieval strategy', 'Prompt engineering', 'LLM API integration', 'Structured outputs', 'Document processing'],
   },
   {
-    title: 'LLM & Agentic AI',
-    items: ['Anthropic Claude API', 'OpenAI API', 'LangChain', 'LangGraph', 'RAG pipelines', 'FAISS', 'Chroma', 'Prompt engineering', 'Context management'],
+    title: 'ML Engineering & Evaluation',
+    items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'Hugging Face', 'Ultralytics', 'OpenCV', 'NumPy', 'Pandas', 'MLflow', 'AUROC / mAP / F1', 'Latency profiling', 'ONNX export'],
   },
   {
-    title: 'Edge AI & MLOps',
-    items: ['OAK-1W / DepthAI', 'ONNX', 'Embedded inference', 'Docker', 'AWS EC2', 'Azure AI', 'REST API design', 'Model versioning', 'Monitoring', 'CI/CD'],
+    title: 'Deployment & Delivery',
+    items: ['FastAPI', 'Flask', 'Docker', 'Linux', 'Git', 'REST API design', 'On-site installation', 'Live camera & hardware integration', 'Production troubleshooting'],
   },
   {
-    title: 'Backend, Tooling & Languages',
-    items: ['Python', 'C++', 'C', 'JavaScript', 'MATLAB', 'SQL', 'FastAPI', 'Flask', 'Streamlit', 'React', 'Next.js', 'Node.js', 'Laravel', 'MySQL', 'MongoDB', 'Roboflow', 'CVAT', 'Gazebo', 'Linux'],
+    title: 'Data & Backend',
+    items: ['Dataset collection & labelling', 'Roboflow', 'Preprocessing pipelines', 'Node.js', 'Express.js', 'MySQL', 'SQLite', 'Role-based auth'],
+  },
+  {
+    title: 'Frontend & Languages',
+    items: ['React.js', 'Next.js', 'Operator dashboards', 'Live-updating interfaces', 'Python', 'JavaScript (ES6+)', 'SQL', 'C / C++'],
   },
 ]

@@ -21,18 +21,39 @@ const nextConfig: NextConfig = {
   // poster it already has.
   async headers() {
     return [
-      // Baseline hardening on every route. No site-wide CSP here yet — this
-      // page loads Google Fonts + a handful of same-origin scripts and
-      // getting a Content-Security-Policy right needs it enumerated
-      // deliberately, not guessed; these four are safe, narrow wins with no
-      // behavior to break.
+      // Baseline hardening on every route.
+      //
+      // The CSP is strict because this site genuinely has no third parties:
+      // next/font self-hosts its files, there is no analytics, no embed and no
+      // external image host. 'unsafe-inline' is needed in two places and only
+      // two: the pre-paint theme script in layout.tsx (which must run before
+      // first paint, so it cannot be deferred to a file) and React's inline
+      // style attributes. Adding any third-party script means revisiting this,
+      // not widening it by reflex.
       {
         source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob:",
+              "media-src 'self'",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "upgrade-insecure-requests",
+            ].join("; "),
+          },
         ],
       },
       // Every media asset — images, video, the agent avatar, sound, the CV —

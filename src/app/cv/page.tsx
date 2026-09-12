@@ -6,7 +6,7 @@ import {
   experience,
   education,
   awards,
-  certifications,
+  leadership,
   skillGroups,
 } from "@/content/site";
 import { projectBySlug } from "@/content/projects";
@@ -168,7 +168,11 @@ export default function CV() {
             <p className="text-sm tabular-nums text-fg-mute">{education.years}</p>
           </div>
           <p className="mt-0.5 text-sm text-fg-dim">
-            {education.institution} · {education.location}
+            {education.institution} · {education.location} · {education.grade}
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-fg-dim">
+            <span className="text-fg">Relevant coursework:</span>{" "}
+            {education.coursework}
           </p>
         </section>
 
@@ -224,28 +228,19 @@ export default function CV() {
           </ul>
         </section>
 
-        {/* ---- Certifications ---- */}
-        <section className="mt-12" aria-labelledby="cv-certs">
-          <h2 id="cv-certs" className="label">
-            Certifications
+        {/* ---- Leadership ---- */}
+        <section className="mt-12" aria-labelledby="cv-leadership">
+          <h2 id="cv-leadership" className="label">
+            Leadership
           </h2>
-          <ul className="mt-5 space-y-2.5">
-            {certifications.map((c) => (
-              <li key={c.name} className="text-sm leading-relaxed text-fg-dim">
-                {c.credential ? (
-                  <a
-                    href={c.credential}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-fg underline decoration-line-strong underline-offset-2 transition-colors hover:decoration-a2"
-                  >
-                    {c.name}
-                  </a>
-                ) : (
-                  <span className="text-fg">{c.name}</span>
-                )}
-                {" — "}
-                {c.issuer}
+          <ul className="mt-5 space-y-3">
+            {leadership.map((l) => (
+              <li
+                key={`${l.role}-${l.org}`}
+                className="text-sm leading-relaxed text-fg-dim"
+              >
+                <span className="font-medium text-fg">{l.role}</span> — {l.org}
+                {l.period ? ` (${l.period})` : ""}
               </li>
             ))}
           </ul>

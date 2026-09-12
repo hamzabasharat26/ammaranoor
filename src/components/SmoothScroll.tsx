@@ -2,21 +2,15 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
-// A resize on mobile is usually just the URL bar showing/hiding — don't
-// re-measure every trigger for it. And end scrub work the moment a fast
-// flick stops rather than easing it out.
-ScrollTrigger.config({ ignoreMobileResize: true });
-ScrollTrigger.defaults({ fastScrollEnd: true });
 
 /**
- * Drives Lenis from GSAP's ticker so scroll-linked animations and the
- * smooth-scroll position update on the SAME frame. Running Lenis on its own
- * RAF loop is the usual cause of ScrollTrigger jitter.
+ * Smooth scroll, and anchor links that inherit its easing.
+ *
+ * Lenis runs on its own rAF here. It used to be driven from GSAP's ticker so
+ * that ScrollTrigger updated on the same frame — there is no ScrollTrigger any
+ * more (reveals moved to IntersectionObserver in src/lib/reveal.ts, which
+ * costs no layout), so the extra coupling to GSAP's ticker bought nothing and
+ * kept GSAP on the critical path for every route.
  */
 export default function SmoothScroll({
   children,
@@ -35,11 +29,12 @@ export default function SmoothScroll({
         touchMultiplier: 1.6,
       });
 
-      lenis.on("scroll", ScrollTrigger.update);
-
-      const raf = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(raf);
-      gsap.ticker.lagSmoothing(0);
+      let frame = 0;
+      const raf = (time: number) => {
+        lenis.raf(time);
+        frame = requestAnimationFrame(raf);
+      };
+      frame = requestAnimationFrame(raf);
 
       // Anchor links go through Lenis so they inherit the easing
       const onClick = (e: MouseEvent) => {
@@ -56,8 +51,7 @@ export default function SmoothScroll({
 
       teardown = () => {
         document.removeEventListener("click", onClick);
-        gsap.ticker.remove(raf);
-        gsap.ticker.lagSmoothing(500, 33); // GSAP's default
+        cancelAnimationFrame(frame);
         lenis.destroy();
       };
     };

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-labelledby="t d">
+  <title id="t">Retrieval pipeline</title>
+  <desc id="d">Client documents are ingested, chunked and embedded into a vector store. A user question is embedded, matched against that store, and the retrieved passages are passed to the language model, which answers into a React dashboard behind role-based auth. A separate branch runs OCR and YOLOv8 detection over scanned documents and images so their contents enter the same path.</desc>
+  <style>
+    .bg{fill:#FFFFFF}
+    .card{fill:#FBFAF8;stroke:#E4E1DC;stroke-width:2;rx:14}
+    .accent{fill:#EEF0FF;stroke:#6366F1;stroke-width:2;rx:14}
+    .violet{fill:#F5F0FF;stroke:#8B5CF6;stroke-width:2;rx:14}
+    .warm{fill:#FDF0F6;stroke:#EC4899;stroke-width:2;rx:14}
+    .h{font:600 15px ui-sans-serif,system-ui,'Segoe UI',sans-serif;fill:#16161D}
+    .s{font:400 13px ui-sans-serif,system-ui,'Segoe UI',sans-serif;fill:#5B5B66}
+    .m{font:600 12px ui-monospace,'Cascadia Mono',Consolas,monospace;fill:#6366F1;letter-spacing:.08em}
+    .eyebrow{font:600 12px ui-monospace,'Cascadia Mono',Consolas,monospace;fill:#8B5CF6;letter-spacing:.14em}
+    .flow{stroke:#B9B5AE;stroke-width:2;fill:none;marker-end:url(#a)}
+    .flowa{stroke:#6366F1;stroke-width:2;fill:none;marker-end:url(#ai)}
+    .flowv{stroke:#8B5CF6;stroke-width:2;fill:none;stroke-dasharray:6 5;marker-end:url(#av)}
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B9B5AE"/></marker>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6366F1"/></marker>
+    <marker id="av" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8B5CF6"/></marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="750"/>
+  <text class="eyebrow" x="48" y="56">RETRIEVAL-AUGMENTED GENERATION — CLIENT PRODUCTION PATH</text>
+  <text class="h" x="48" y="86" style="font-size:22px">Get retrieval right first. The model is the easy half.</text>
+
+  <!-- ingest row -->
+  <text class="m" x="48" y="140">INGEST</text>
+  <rect class="card" x="48" y="156" width="196" height="92"/>
+  <text class="h" x="68" y="192">Client documents</text>
+  <text class="s" x="68" y="214">Messy, inconsistent,</text>
+  <text class="s" x="68" y="232">nothing standardised</text>
+
+  <path class="flow" d="M252 202 H296"/>
+
+  <rect class="accent" x="304" y="156" width="220" height="92"/>
+  <text class="h" x="324" y="192">Chunking strategy</text>
+  <text class="s" x="324" y="214">Rebuilt after the standard</text>
+  <text class="s" x="324" y="232">metrics missed real failures</text>
+
+  <path class="flow" d="M532 202 H576"/>
+
+  <rect class="card" x="584" y="156" width="196" height="92"/>
+  <text class="h" x="604" y="192">Embeddings</text>
+  <text class="s" x="604" y="214">One vector per chunk</text>
+
+  <path class="flow" d="M788 202 H832"/>
+
+  <rect class="accent" x="840" y="156" width="312" height="92"/>
+  <text class="h" x="860" y="192">Vector store</text>
+  <text class="s" x="860" y="214">Searchable by meaning rather than keyword —</text>
+  <text class="s" x="860" y="232">the part that decides whether the answer is grounded.</text>
+
+  <!-- OCR branch -->
+  <rect class="violet" x="48" y="288" width="476" height="92"/>
+  <text class="h" x="68" y="324">OCR + YOLOv8 branch</text>
+  <text class="s" x="68" y="346">Scans and images read and detected, then fed into the same</text>
+  <text class="s" x="68" y="364">chunking path — this is what collapsed a multi-step manual review.</text>
+  <path class="flowv" d="M414 288 V256"/>
+
+  <!-- query row -->
+  <text class="m" x="48" y="452">QUERY</text>
+  <rect class="card" x="48" y="468" width="196" height="92"/>
+  <text class="h" x="68" y="504">User question</text>
+  <text class="s" x="68" y="526">Asked in the app they</text>
+  <text class="s" x="68" y="544">already use</text>
+
+  <path class="flowa" d="M252 514 H296"/>
+
+  <rect class="card" x="304" y="468" width="220" height="92"/>
+  <text class="h" x="324" y="504">Retrieve top-k</text>
+  <text class="s" x="324" y="526">Nearest chunks pulled from</text>
+  <text class="s" x="324" y="544">the store, not the whole corpus</text>
+  <path class="flowa" d="M414 468 V400 M414 400 H996 V256"/>
+
+  <path class="flowa" d="M532 514 H576"/>
+
+  <rect class="accent" x="584" y="468" width="196" height="92"/>
+  <text class="h" x="604" y="504">LLM generation</text>
+  <text class="s" x="604" y="526">Answers from the retrieved</text>
+  <text class="s" x="604" y="544">passages, not from memory</text>
+
+  <path class="flowa" d="M788 514 H832"/>
+
+  <rect class="warm" x="840" y="468" width="312" height="92"/>
+  <text class="h" x="860" y="504">React dashboard</text>
+  <text class="s" x="860" y="526">REST API, role-based auth, live updates —</text>
+  <text class="s" x="860" y="544">output an end user can act on.</text>
+
+  <!-- foot -->
+  <rect class="card" x="48" y="608" width="1104" height="96"/>
+  <text class="m" x="72" y="644">WHY THE CHUNKING REBUILD MATTERED</text>
+  <text class="s" x="72" y="674">Standard retrieval metrics scored well while users still hit wrong answers. Diagnosing that mismatch — and rebuilding chunking and retrieval</text>
+  <text class="s" x="72" y="694">around the failures the client's own documents produced — is what raised output consistency. The language model never changed.</text>
+</svg>

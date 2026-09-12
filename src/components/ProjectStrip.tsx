@@ -37,7 +37,7 @@ export default function ProjectStrip({ items }: { items: StripItem[] }) {
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           unoptimized={it.poster.endsWith(".svg")}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
       </div>
       <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 p-3">
         <span className="truncate text-sm font-medium text-fg">{it.title}</span>
@@ -56,7 +56,7 @@ export default function ProjectStrip({ items }: { items: StripItem[] }) {
       <p className="label mx-auto mb-5 w-full max-w-6xl px-6 md:px-10">
         Selected work — shipped &amp; in the lab
       </p>
-      <div className="marquee-track relative flex overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_4%,#000_96%,transparent)]">
+      <div className="marquee-track relative flex overflow-hidden">
         <div className="marquee gap-4 pr-4">
           {items.map((it) => card(it, false))}
           {items.map((it) => card(it, true))}

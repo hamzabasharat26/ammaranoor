@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Content contracts for hamzabasharat.com
+// Content contracts for Ammara Noor's portfolio
 //
 // These types are the architecture. Every section of the site renders from
 // this data — no copy is hardcoded in JSX. Change the site by changing data.
@@ -153,28 +153,22 @@ export interface Award {
   projectSlug?: string
 }
 
-export interface Certification {
-  name: string
-  issuer: string
-  /** Credential URL if you have one — an unverifiable cert is worth less. */
-  credential?: string
-}
-
-export interface Workshop {
-  title: string
-  /** Who ran it / where. */
-  host: string
-  venue: string
-  dates: string
-  /** Hamza's part in it. */
+/** A held position or recognition, with the one piece of media that evidences
+ *  it. `media.kind` decides whether the tile renders a still or a muted clip. */
+export interface Leadership {
   role: string
-  /** What was actually taught — verbatim from the source, never invented. */
-  curriculum: string[]
-  /** Local photo of the session. */
-  image?: string
-  imageAlt?: string
-  /** Session photos + the signed credential, cycled in the teaching block. */
-  photos?: Photo[]
+  org: string
+  /** "2025 - 2026", "May 2026", or "" when the source does not state one. */
+  period: string
+  blurb: string
+  media?: {
+    kind: 'image' | 'clip'
+    /** The still, or the clip's poster frame. */
+    poster: string
+    webm?: string
+    mp4?: string
+    alt: string
+  }
 }
 
 export interface Photo {

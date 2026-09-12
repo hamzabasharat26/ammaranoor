@@ -59,7 +59,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
   const index = projects.findIndex((p) => p.slug === project.slug);
   const next = projects[(index + 1) % projects.length];
 
-  // Every DRAFT: string is Hamza's to fill. They are stripped here rather than
+  // Every DRAFT: string is Ammara's to fill. They are stripped here rather than
   // rendered as placeholder prose — CLAUDE.md §2 forbids shipping a slot whose
   // content does not exist yet.
   const limitations = project.limitations.filter(
@@ -230,7 +230,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         </section>
 
         {/* ---- Limitations. Renders only what is real; DRAFT entries are
-                stripped above and surfaced to Hamza in dev only. ---- */}
+                stripped above and surfaced in dev only. ---- */}
         {limitations.length > 0 && (
           <section className="mt-14" aria-labelledby="h-limits">
             <h2 id="h-limits" className="label">
