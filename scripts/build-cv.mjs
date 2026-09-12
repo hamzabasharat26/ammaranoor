@@ -52,7 +52,7 @@ await page.pdf({
 // The DOM estimate is the useful diagnostic (it says how much to trim); the
 // page count read back out of the PDF is the actual gate.
 const fill = await page.evaluate(() => {
-  const el = document.querySelector(".ats");
+  const el = document.querySelector(".cv");
   return el ? el.scrollHeight / (297 * (96 / 25.4)) : null;
 });
 

@@ -73,6 +73,15 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
+      // The CV keeps a stable filename so links never break — which means it
+      // must NOT be cached as immutable, or visitors keep an outdated CV for a
+      // year. Declared after the /media rule so it wins.
+      {
+        source: "/media/Ammara_Noor_CV.pdf",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+        ],
+      },
     ];
   },
 };

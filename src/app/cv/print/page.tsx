@@ -2,17 +2,16 @@ import type { Metadata } from "next";
 import { cv } from "@/content/cv";
 
 /**
- * The ATS-parseable one-page CV. This route is the SOURCE of
- * public/media/Ammara_Noor_CV.pdf — scripts/build-cv.mjs prints it to A4.
+ * The one-page ATS CV — the source of public/media/Ammara_Noor_CV.pdf.
  *
- * Deliberately plain: one column, no tables, no images, no icons, black on
- * white, standard headings, real selectable text. Everything an applicant
- * tracking system chokes on is absent by construction. Do not add the site
- * chrome here — /cv is the designed version for humans, this is the machine
- * one.
+ * Styled after the Overleaf "Jake's Resume" template: centred name, a single
+ * contact line, small-caps section headings over a full-width rule, bold role
+ * and right-aligned dates, italic company and right-aligned location. That is
+ * the layout recruiters recognise as professional.
  *
- * noindex: this exists to be printed, not crawled. The designed /cv carries
- * the same content for search.
+ * It remains ATS-safe by construction: one column, real selectable text, no
+ * tables, images or icons, ASCII punctuation, ligatures off (the "fl" ligature
+ * would turn "MLflow" into a glyph a parser cannot match).
  */
 export const metadata: Metadata = {
   title: "CV (print)",
@@ -20,35 +19,33 @@ export const metadata: Metadata = {
 };
 
 const CSS = `
-  .ats { --ink:#000; --rule:#000; }
-  .ats {
-    background:#fff; color:var(--ink);
-    font-family: Calibri, Carlito, "Segoe UI", Arial, Helvetica, sans-serif;
-    font-size: 8.9pt; line-height: 1.19;
-    /* Ligatures OFF: the fi/fl ligature glyphs extract as U+FB01/U+FB02, which
-       turns "MLflow" into "ML<fl>ow" for a keyword matcher. */
+  .cv {
+    background:#fff; color:#000;
+    font-family: "Latin Modern Roman", "CMU Serif", Cambria, Georgia, "Times New Roman", serif;
+    font-size: 9.3pt; line-height: 1.16;
     font-variant-ligatures: none; font-feature-settings: "liga" 0, "clig" 0;
-    max-width: 190mm; margin: 0 auto; padding: 7mm 11mm 4mm;
+    max-width: 210mm; margin: 0 auto; padding: 8mm 12mm 6mm;
   }
-  .ats h1 { font-size: 18pt; font-weight: 700; letter-spacing: .2px; margin: 0; }
-  .ats .role { font-size: 9.8pt; font-weight: 600; margin: 1.5pt 0 0; }
-  .ats .meta { font-size: 8.5pt; margin: 2.5pt 0 0; }
-  .ats .avail { font-size: 8.5pt; font-style: italic; margin: 1pt 0 0; }
-  .ats h2 {
-    font-size: 9pt; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .6px; margin: 5.5pt 0 1.8pt;
-    border-bottom: 0.9pt solid var(--rule); padding-bottom: 1.2pt;
+  .cv a { color: inherit; text-decoration: none; }
+  .cv .head { text-align: center; }
+  .cv h1 { font-size: 24pt; font-weight: 700; font-variant: small-caps; letter-spacing: .5px; margin: 0; line-height: 1; }
+  .cv .title { font-size: 10.5pt; font-weight: 700; margin: 3pt 0 0; }
+  .cv .contact { font-size: 9pt; margin: 2.5pt 0 0; }
+  .cv .contact span + span::before { content: " | "; }
+  .cv .loc { font-size: 9pt; margin: 1pt 0 0; font-style: italic; }
+  .cv h2 {
+    font-size: 11pt; font-weight: 700; font-variant: small-caps; letter-spacing: .4px;
+    margin: 6pt 0 2.5pt; padding-bottom: 1pt; border-bottom: .8pt solid #000;
   }
-  .ats p { margin: 0 0 2pt; }
-  .ats ul { margin: 1.5pt 0 0; padding-left: 11pt; }
-  .ats li { margin: 0 0 1pt; }
-  .ats .row { display: flex; justify-content: space-between; gap: 10pt; align-items: baseline; }
-  .ats .jt { font-weight: 700; }
-  .ats .org { font-style: italic; }
-  .ats .dates { white-space: nowrap; font-size: 9pt; }
-  .ats .skill { margin: 0 0 1.6pt; }
-  .ats .skill b { font-weight: 700; }
-  .ats a { color: inherit; text-decoration: none; }
+  .cv p { margin: 0; }
+  .cv .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8pt; }
+  .cv .b { font-weight: 700; }
+  .cv .i { font-style: italic; }
+  .cv .entry { margin: 0 0 3pt; }
+  /* Tailwind's preflight sets list-style:none globally; restore real bullets. */
+  .cv ul { margin: 1pt 0 0; padding-left: 12pt; list-style: disc outside; }
+  .cv li { margin: 0 0 .8pt; }
+  .cv .skills p { margin: 0 0 1pt; }
   @page { size: A4; margin: 0; }
 `;
 
@@ -56,37 +53,43 @@ export default function CvPrint() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <main className="ats">
-        <h1>{cv.name}</h1>
-        <p className="role">{cv.headline}</p>
-        <p className="meta">{cv.contact.join(" | ")}</p>
-        <p className="avail">{cv.availability}</p>
+      <main className="cv">
+        <header className="head">
+          <h1>{cv.name}</h1>
+          <p className="title">{cv.headline}</p>
+          <p className="contact">
+            {cv.contact.map((c) => (
+              <span key={c.text}>{"href" in c ? <a href={c.href}>{c.text}</a> : c.text}</span>
+            ))}
+          </p>
+          <p className="loc">{cv.location}</p>
+        </header>
 
         <h2>Summary</h2>
         <p>{cv.summary}</p>
 
         <h2>Technical Skills</h2>
-        {cv.skills.map((s) => (
-          <p className="skill" key={s.label}>
-            <b>{s.label}:</b> {s.items}
-          </p>
-        ))}
+        <div className="skills">
+          {cv.skills.map((s) => (
+            <p key={s.label}>
+              <span className="b">{s.label}:</span> {s.items}
+            </p>
+          ))}
+        </div>
 
         <h2>Experience</h2>
-        {cv.experience.map((role) => (
-          <div key={role.org} style={{ marginBottom: "4pt" }}>
+        {cv.experience.map((r) => (
+          <div className="entry" key={r.org}>
             <div className="row">
-              <span>
-                <span className="jt">{role.title}</span>
-                {" - "}
-                <span className="org">
-                  {role.org}, {role.location}
-                </span>
-              </span>
-              <span className="dates">{role.dates}</span>
+              <span className="b">{r.title}</span>
+              <span>{r.dates}</span>
+            </div>
+            <div className="row">
+              <span className="i">{r.org}</span>
+              <span className="i">{r.location}</span>
             </div>
             <ul>
-              {role.bullets.map((b) => (
+              {r.bullets.map((b) => (
                 <li key={b}>{b}</li>
               ))}
             </ul>
@@ -95,14 +98,12 @@ export default function CvPrint() {
 
         <h2>Projects</h2>
         {cv.projects.map((p) => (
-          <div key={p.title}>
+          <div className="entry" key={p.title}>
             <div className="row">
               <span>
-                <span className="jt">{p.title}</span>
-                {" - "}
-                <span className="org">{p.stack}</span>
+                <span className="b">{p.title}</span> | <span className="i">{p.stack}</span>
               </span>
-              <span className="dates">{p.link}</span>
+              <span>{p.date}</span>
             </div>
             <ul>
               {p.bullets.map((b) => (
@@ -113,15 +114,17 @@ export default function CvPrint() {
         ))}
 
         <h2>Education</h2>
-        <div className="row">
-          <span>
-            <span className="jt">{cv.education.degree}</span>
-            {" - "}
-            <span className="org">{cv.education.org}</span>
-          </span>
-          <span className="dates">{cv.education.dates}</span>
+        <div className="entry">
+          <div className="row">
+            <span className="b">{cv.education.org}</span>
+            <span>{cv.education.location}</span>
+          </div>
+          <div className="row">
+            <span className="i">{cv.education.degree}</span>
+            <span className="i">{cv.education.dates}</span>
+          </div>
+          <p>{cv.education.detail}</p>
         </div>
-        <p>{cv.education.detail}</p>
 
         <h2>Achievements &amp; Leadership</h2>
         <ul>
