@@ -48,7 +48,7 @@ export const agentTopics: AgentTopic[] = [
     chip: "Are you available?",
     patterns: ["available", "availability", "hiring", "hire you", "job", "role", "position", "full-time", "fulltime", "full time", "employment", "recruit", "join", "notice period", "start date", "when can you start", "open to work"],
     answer:
-      "Yes — available immediately for full-time AI/ML engineering roles. I am based in Lahore and open to remote or onsite. I finish BS Computer Engineering at NUTECH in 2026 and have been working in industry alongside it since 2025. Email is the fastest way to reach me.",
+      "Yes — available immediately for full-time AI/ML engineering roles. I am based in Islamabad and open to remote or onsite. I finish BS Computer Engineering at NUTECH in 2026 and have been working in industry alongside it since 2025. Email is the fastest way to reach me.",
     cta: { label: "Email Ammara", href: `mailto:${site.email}` },
   },
   {
@@ -93,7 +93,7 @@ export const agentTopics: AgentTopic[] = [
     chip: null,
     patterns: ["who are you", "who is ammara", "background", "about you", "experience", "cv", "resume", "education", "study", "degree", "university", "are you a bot", "what are you", "nutech"],
     answer:
-      "I'm Pixel, the assistant for Ammara Noor's portfolio — I answer from her real record, nothing invented. Ammara is an AI / ML engineer in Lahore: computer vision and LLM systems at Robionix and Evolvian, a UAV perception internship at NDC/NESCOM, and BS Computer Engineering at NUTECH (CGPA 3.44/4.00, class of 2026). She chairs IEEE Women in Engineering at NUTECH and is chief coordinator of the student council.",
+      "I'm Pixel, the assistant for Ammara Noor's portfolio — I answer from her real record, nothing invented. Ammara is an AI / ML engineer in Islamabad: computer vision and LLM systems at Robionix and Evolvian, a UAV perception internship at NDC/NESCOM, and BS Computer Engineering at NUTECH (CGPA 3.44/4.00, class of 2026). She chairs IEEE Women in Engineering at NUTECH and is chief coordinator of the student council.",
     cta: { label: "Full CV", href: site.links.cv },
   },
   {
@@ -116,7 +116,7 @@ export const agentTopics: AgentTopic[] = [
     chip: null,
     patterns: ["timezone", "time zone", "remote", "pakistan", "lahore", "where are you", "location", "relocate", "relocation", "onsite", "hybrid"],
     answer:
-      "Lahore, Pakistan (PKT). Open to remote and onsite work either way. Most of the deployment work has been at mills and client offices, so travel is normal rather than an exception.",
+      "Islamabad, Pakistan (PKT). Open to remote and onsite work either way. Most of the deployment work has been at mills and client offices, so travel is normal rather than an exception.",
   },
   {
     id: "limits",
@@ -143,4 +143,4 @@ export const agentFallback = {
 };
 
 export const agentGreeting =
-  "I'm Pixel, Ammara's portfolio assistant. She's an AI/ML engineer in Lahore — computer vision on live production lines, plus the retrieval systems and deployment around them. Ask what she builds, whether it has shipped, her stack, or whether she's available. Pick one below or type your own.";
+  "I'm Pixel, Ammara's portfolio assistant. She's an AI/ML engineer in Islamabad — computer vision on live production lines, plus the retrieval systems and deployment around them. Ask what she builds, whether it has shipped, her stack, or whether she's available. Pick one below or type your own.";

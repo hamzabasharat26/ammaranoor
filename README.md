@@ -1,7 +1,7 @@
 # Ammara Noor — portfolio
 
 The portfolio of **Ammara Noor** — AI / ML Engineer (computer vision, LLM & RAG
-systems, production ML), Lahore, Pakistan.
+systems, production ML), Islamabad, Pakistan.
 
 ## What this is
 

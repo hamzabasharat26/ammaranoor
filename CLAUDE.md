@@ -7,7 +7,7 @@ When a request conflicts with this file, say so and ask; do not silently overrid
 
 ## 1. What this site is
 
-A portfolio for **Ammara Noor, AI / ML Engineer** (Lahore, Pakistan) — computer
+A portfolio for **Ammara Noor, AI / ML Engineer** (Islamabad, Pakistan) — computer
 vision, LLM & RAG systems, production ML. She is available immediately for
 full-time roles.
 

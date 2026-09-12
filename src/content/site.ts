@@ -43,7 +43,7 @@ export const site = {
     after: ' — and stay until the operators can run it without me.',
   },
 
-  location: 'Lahore, Pakistan',
+  location: 'Islamabad, Pakistan',
   relocation: 'Open to remote & onsite',
   availability: 'Available immediately for full-time AI/ML engineering roles',
   /** What the proof section leads with — leadership reach, not client count. */
@@ -103,7 +103,7 @@ export const site = {
     url: SITE_URL,
     title: 'Ammara Noor — AI / ML Engineer',
     description:
-      'AI / ML Engineer in Lahore, Pakistan. Fabric defect detection at 95% accuracy on a live production line (YOLOv8 + PatchCore), PatchCore reproduced from the paper to 99.56% AUROC on MVTec AD, RAG pipelines in production client applications, UAV perception for NESCOM. PyTorch · YOLOv8 · FastAPI · Docker.',
+      'AI / ML Engineer in Islamabad, Pakistan. Fabric defect detection at 95% accuracy on a live production line (YOLOv8 + PatchCore), PatchCore reproduced from the paper to 99.56% AUROC on MVTec AD, RAG pipelines in production client applications, UAV perception for NESCOM. PyTorch · YOLOv8 · FastAPI · Docker.',
     keywords: [
       'AI ML engineer',
       'machine learning engineer',
@@ -113,7 +113,8 @@ export const site = {
       'LLM applications engineer',
       'MLOps engineer',
       'AI engineer Pakistan',
-      'AI engineer Lahore',
+      'AI engineer Islamabad',
+      'AI engineer Pakistan remote',
       'production machine learning',
       'YOLOv8 object detection',
       'PatchCore anomaly detection',
@@ -132,7 +133,7 @@ export const site = {
   faq: [
     {
       q: 'Are you available, and where?',
-      a: 'Immediately, for full-time AI/ML engineering roles. I am based in Lahore and open to both remote and onsite work. I graduate from NUTECH in 2026 and have been working in industry alongside the degree since 2025.',
+      a: 'Immediately, for full-time AI/ML engineering roles. I am based in Islamabad and open to both remote and onsite work. I graduate from NUTECH in 2026 and have been working in industry alongside the degree since 2025.',
     },
     {
       q: 'What have you actually put into production?',

@@ -27,7 +27,7 @@ export const cv = {
     { text: 'linkedin.com/in/ammaranoorkhan', href: site.links.linkedin },
     { text: 'github.com/ammaran620-de', href: site.links.github },
   ],
-  location: 'Lahore, Pakistan | Open to remote & onsite | Available immediately',
+  location: 'Islamabad, Pakistan | Open to remote & onsite | Available immediately',
 
   summary:
     'AI/ML Engineer and Computer Vision Engineer who takes machine learning systems from data collection to production deployment. Built and commissioned two computer vision systems on live textile production lines - an AI garment size measurement station and a YOLOv8 + PatchCore fabric defect detector at 95% accuracy. Shipped production RAG pipelines into client applications and reproduced PatchCore from the paper to 99.56% AUROC on MVTec AD. Hands-on across deep learning, MLOps, model deployment and on-site integration.',
