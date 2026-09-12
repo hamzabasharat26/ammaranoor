@@ -155,10 +155,13 @@ await image(S("dashboard.jpg"), "rally-dashboard", { width: 1400, q: 80 });
 
 console.log("clips");
 // The deployed measurement rig running on the floor at MEB Karachi.
-// NSC result announcement: the stage call at ~7s into the hall reaction.
 // The deployed measurement rig running on the floor at MEB Karachi.
 clip(S(ZR + "WhatsApp Video 2026-08-08 at 3.22.44 PM.mp4"), "magicqc-rig-run", { start: 0, dur: 5, w: 640, posterAt: 2 });
-clip(S("win_chief_coordinator_NSC_nutech.mp4"), "nsc-result", { start: 7.5, dur: 5, w: 360, posterAt: 11 });
+// The NSC result announcement, in full and from the top — the walk to the
+// podium is what makes the hall reaction mean anything, so this one is not
+// trimmed to a loop. It is hover-play behind preload="none", so the extra
+// bytes are only fetched when a visitor actually asks for it.
+clip(S("win_chief_coordinator_NSC_nutech.mp4"), "nsc-result", { start: 0, dur: 18.1, w: 360, posterAt: 11, crf: 48, x264: 34 });
 // IEEE Day, Islamabad Section — the full 4.7s take.
 clip(S("celebration_of_my_of_wie_chair_IEEE_.mp4"), "ieee-day", { start: 0, dur: 4.7, w: 560, posterAt: 2 });
 

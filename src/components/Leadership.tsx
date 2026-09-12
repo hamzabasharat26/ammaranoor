@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Award, Users } from "lucide-react";
+import { Award, Play, Users } from "lucide-react";
 import { leadership } from "@/content/site";
 import type { Leadership as LeadershipItem } from "@/content/types";
 import { useReveal } from "@/lib/reveal";
@@ -12,17 +12,25 @@ import { useReveal } from "@/lib/reveal";
  * Leadership & impact. The half of the record a bullet list flattens: the
  * positions held, and the one piece of evidence for each.
  *
- * Media rules follow CLAUDE §4 — a clip is muted, mounts only when the tile is
- * near the viewport AND the pointer is hover-capable, and plays on hover only.
- * Under reduced motion the poster is all that ever renders.
+ * Media rules follow CLAUDE §4. Every clip is muted. A short loop mounts only
+ * when the tile is near the viewport AND the pointer is hover-capable, and
+ * plays on hover; a full-length take (`long`) waits for a press on its play
+ * button, then runs once with native controls. Under reduced motion, and on
+ * touch, the poster is all that renders until someone asks for more.
  */
 function Media({ media }: { media: NonNullable<LeadershipItem["media"]> }) {
   const wrap = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [mount, setMount] = useState(false);
+  const [started, setStarted] = useState(false);
+  const isClip = media.kind === "clip" && Boolean(media.webm);
+  const long = isClip && media.long === true;
 
+  // Short loops mount near the viewport so a hover has something to play.
+  // A long take mounts only once the visitor presses play — there is no reason
+  // to put half a megabyte on the wire for a video nobody asked for.
   useEffect(() => {
-    if (media.kind !== "clip") return;
+    if (!isClip || long) return;
     const el = wrap.current;
     if (!el) return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -39,19 +47,33 @@ function Media({ media }: { media: NonNullable<LeadershipItem["media"]> }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [media.kind]);
+  }, [isClip, long]);
+
+  const play = () => {
+    setMount(true);
+    setStarted(true);
+    // The element only exists after this render, so start it on the next frame.
+    requestAnimationFrame(() => video.current?.play().catch(() => {}));
+  };
+
+  const hoverProps =
+    isClip && !long
+      ? {
+          onMouseEnter: () => video.current?.play().catch(() => {}),
+          onMouseLeave: () => {
+            const v = video.current;
+            if (!v) return;
+            v.pause();
+            v.currentTime = 0;
+          },
+        }
+      : {};
 
   return (
     <div
       ref={wrap}
       className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-ink-2"
-      onMouseEnter={() => video.current?.play().catch(() => {})}
-      onMouseLeave={() => {
-        const v = video.current;
-        if (!v) return;
-        v.pause();
-        v.currentTime = 0;
-      }}
+      {...hoverProps}
     >
       <Image
         src={media.poster}
@@ -60,22 +82,44 @@ function Media({ media }: { media: NonNullable<LeadershipItem["media"]> }) {
         sizes="(max-width: 768px) 100vw, 45vw"
         className="object-cover"
       />
+
       {mount && media.webm && (
         <video
           ref={video}
           muted
-          loop
+          loop={!long}
+          controls={long && started}
           playsInline
           preload="none"
           poster={media.poster}
-          aria-hidden
+          aria-label={long ? media.alt : undefined}
+          aria-hidden={long ? undefined : true}
           className="absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-300 [&[data-playing='true']]:opacity-100"
+          data-playing={long && started ? "true" : undefined}
           onPlaying={(e) => e.currentTarget.setAttribute("data-playing", "true")}
-          onPause={(e) => e.currentTarget.removeAttribute("data-playing")}
+          onPause={(e) => {
+            if (!long) e.currentTarget.removeAttribute("data-playing");
+          }}
         >
           <source src={media.webm} type="video/webm" />
           {media.mp4 && <source src={media.mp4} type="video/mp4" />}
         </video>
+      )}
+
+      {long && !started && (
+        <button
+          type="button"
+          onClick={play}
+          className="absolute inset-0 grid place-items-center bg-black/25 transition-colors hover:bg-black/35"
+        >
+          <span className="sr-only">Play the full clip: {media.alt}</span>
+          <span
+            aria-hidden
+            className="grid size-14 place-items-center rounded-full bg-white/90 text-ink shadow-lg transition-transform group-hover:scale-105"
+          >
+            <Play className="ml-0.5 size-6 fill-current" />
+          </span>
+        </button>
       )}
     </div>
   );

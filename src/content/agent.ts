@@ -40,7 +40,7 @@ export const agentTopics: AgentTopic[] = [
     chip: "Has any of it shipped?",
     patterns: ["proof", "real", "results", "does it ship", "actually work", "deployed", "in production", "live", "evidence", "case study", "shipped"],
     answer:
-      "MagicQC is running on a live fabric inspection line at 95% accuracy on a held-out test set — I collected and labelled the ~1,600-image dataset on the mill floor because none existed, trained YOLOv8 for three defect classes, added PatchCore for the ones nobody had labelled, and installed the whole thing. It was shown at the 32nd Textile Asia Expo and Nishat Mills, Gul Ahmed and Sapphire asked for evaluations afterwards. At Evolvian, RAG pipelines I built are in live client applications. Every number on this site comes from my CV.",
+      "Two of them, both installed on a working floor at Robionix. MagicQC is an AI-based garment size measurement station: it derives every point of measure from the garment and calls it against the buyer's tolerance, and it ships as a desktop app on the floor plus the web system of record behind it. Separately, the fabric defect detector runs at 95% accuracy on a held-out test set — I collected and labelled the ~1,600-image dataset on the mill floor because none existed, trained YOLOv8 for three defect classes and added PatchCore for the ones nobody had labelled. MagicQC was shown at the 32nd Textile Asia Expo and Nishat Mills, Gul Ahmed and Sapphire asked for evaluations afterwards.",
     cta: { label: "See the work", href: "#work" },
   },
   {
@@ -48,7 +48,7 @@ export const agentTopics: AgentTopic[] = [
     chip: "Are you available?",
     patterns: ["available", "availability", "hiring", "hire you", "job", "role", "position", "full-time", "fulltime", "full time", "employment", "recruit", "join", "notice period", "start date", "when can you start", "open to work"],
     answer:
-      "Yes — available immediately for full-time AI/ML engineering roles. I am based in Lahore and open to Lahore, Islamabad, Karachi or remote. I finish BS Computer Engineering at NUTECH in 2026 and have been working in industry alongside it since 2025. Email is the fastest way to reach me.",
+      "Yes — available immediately for full-time AI/ML engineering roles. I am based in Lahore and open to remote or onsite. I finish BS Computer Engineering at NUTECH in 2026 and have been working in industry alongside it since 2025. Email is the fastest way to reach me.",
     cta: { label: "Email Ammara", href: `mailto:${site.email}` },
   },
   {
@@ -78,14 +78,14 @@ export const agentTopics: AgentTopic[] = [
     chip: null,
     patterns: ["deploy", "deployment", "on site", "on-site", "field", "install", "rollout", "operators", "factory", "mill", "hardware", "camera", "integration"],
     answer:
-      "On-site is the part I actually like. For MagicQC that meant going to the mill, collecting and labelling the dataset on the production floor, installing the camera and the system, and working with the operators through rollout — then re-tuning thresholds against real conditions to cut false positives, because an inspector who stops trusting the alarm just ignores it. I am comfortable in the field, not only at a desk.",
+      "On-site is the part I actually like. For the fabric line that meant going to the mill, collecting and labelling the dataset on the production floor, installing the camera and the system, and working with the operators through rollout — then re-tuning thresholds against real conditions to cut false positives, because an inspector who stops trusting the alarm just ignores it. I am comfortable in the field, not only at a desk.",
   },
   {
     id: "projects",
     chip: null,
     patterns: ["best project", "favourite project", "favorite project", "which project", "strongest", "magicqc", "fabric", "uav", "drone", "nescom", "textile"],
     answer:
-      "MagicQC is the one to look at if you want to know whether I ship: dataset collection through to a system installed on a live line. The anomaly-detection pipeline is the one to look at if you want to know how I think — it is PatchCore rebuilt from the paper with an honest evaluation, and the repository is public. The UAV work at NESCOM was person tracking and vehicle detection on live aerial video, plus the parking dashboard that turned it into a number an operator could use.",
+      "MagicQC and the fabric defect detector are the ones to look at if you want to know whether I ship — two separate systems, both commissioned on a working floor. The anomaly-detection pipeline is the one to look at if you want to know how I think: PatchCore rebuilt from the paper with an honest evaluation, and the repository is public. The UAV work at NESCOM was person tracking and vehicle detection on live aerial video, plus the parking dashboard that turned it into a number an operator could use.",
     cta: { label: "See the work", href: "#work" },
   },
   {
@@ -116,7 +116,7 @@ export const agentTopics: AgentTopic[] = [
     chip: null,
     patterns: ["timezone", "time zone", "remote", "pakistan", "lahore", "where are you", "location", "relocate", "relocation", "onsite", "hybrid"],
     answer:
-      "Lahore, Pakistan (PKT). Open to Lahore, Islamabad, Karachi or fully remote. Most of the on-site deployment work has been at mills and client offices around Punjab, so travel is normal rather than an exception.",
+      "Lahore, Pakistan (PKT). Open to remote and onsite work either way. Most of the deployment work has been at mills and client offices, so travel is normal rather than an exception.",
   },
   {
     id: "limits",

@@ -10,7 +10,7 @@ manager deciding, in about thirty seconds, whether this person has shipped
 anything real. Every project, metric and claim traces back to a source CV or to
 a public repository — nothing on the site is invented copy.
 
-- Five case studies, each with at least one measured outcome **and** a stated
+- Six case studies, each with at least one measured outcome **and** a stated
   limitation. The limitations are the point: a portfolio with no failure modes
   reads as inexperience.
 - A leadership section, because the IEEE WIE chair and student-council roles are
@@ -47,7 +47,7 @@ There is no WebGL either — see `CLAUDE.md` §4.
 src/
   app/            routes: /, /work, /work/[slug], /cv, /cv/print, api/agent (off)
   components/     one component per section; Server Components by default
-  content/        THE source of truth — site.ts, projects.ts, cv.ts, agent.ts
+  content/        THE source of truth — site.ts, projects.ts, frames.ts, cv.ts, agent.ts
   lib/            reveal.ts (scroll reveals), motion.ts (magnetic), audio.ts
 public/media/     every shipping asset, built by the scripts below
 docs/drive/       private source material (gitignored) — CVs, raw photos, video

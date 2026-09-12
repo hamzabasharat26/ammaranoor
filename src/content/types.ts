@@ -168,6 +168,13 @@ export interface Leadership {
     webm?: string
     mp4?: string
     alt: string
+    /**
+     * A full-length take rather than a short loop. Long clips get a play
+     * button and native controls instead of hover-to-play: hovering for
+     * eighteen seconds is not an interaction anyone performs, and a clip that
+     * restarts the moment the pointer leaves can never actually be watched.
+     */
+    long?: boolean
   }
 }
 

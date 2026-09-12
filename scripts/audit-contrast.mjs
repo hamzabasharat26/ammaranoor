@@ -17,7 +17,7 @@ import fs from "node:fs";
 import puppeteer from "puppeteer-core";
 
 const BASE = process.argv[2] ?? "http://localhost:3000";
-const ROUTES = ["/", "/work", "/work/magicqc-fabric-defect", "/cv"];
+const ROUTES = ["/", "/work", "/work/magicqc-size-measurement", "/cv"];
 
 const CHROME = [
   "C:/Program Files/Google/Chrome/Application/chrome.exe",
@@ -103,7 +103,7 @@ async function audit(url, theme) {
 
 for (const r of ROUTES) await audit(r);
 await audit("/", "dark");
-await audit("/work/magicqc-fabric-defect", "dark");
+await audit("/work/magicqc-size-measurement", "dark");
 await browser.close();
 
 // NOTE: text drawn over a photograph or a sibling gradient scrim reads as a

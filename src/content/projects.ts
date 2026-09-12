@@ -15,9 +15,72 @@ import type { Project } from './types'
 
 export const projects: Project[] = [
   {
-    slug: 'magicqc-fabric-defect',
+    slug: 'magicqc-size-measurement',
     title: 'MagicQC',
-    kicker: 'Fabric inspection — live textile line',
+    kicker: 'AI garment size measurement \u2014 deployed on the line',
+    year: '2026',
+    role: 'AI / Computer Vision Engineer',
+    org: 'Robionix Technologies',
+    status: 'production',
+    domains: ['computer-vision', 'full-stack'],
+
+    problem:
+      'Finished garments are size-checked by hand with a tape measure, so a QC pass is slow, two operators disagree on the same piece, and once the carton ships there is no record of what was actually measured.',
+
+    approach: [
+      'Built the measurement pipeline: a fixed camera over the garment, segmentation of the piece from the table, then each point of measure derived from the extracted outline instead of read off a tape.',
+      'Called every point of measure against the buyer\u2019s own tolerance and returned one verdict the operator can act on \u2014 PASS or FAIL, with the deviating panel named rather than the whole piece rejected.',
+      'Shipped it as a desktop application on the factory floor, so the station keeps working when the site network does not.',
+      'Built the web side too: brands, article types, styles and sizes, operators and purchase orders \u2014 the system of record that turns individual measurements into something a QC manager can audit.',
+      'Installed and commissioned the station on the production line at MEB Karachi and ran it with the operators who use it.',
+      'Exhibited it at the 32nd Textile Asia Expo, demonstrating live measurement to mill buyers.',
+    ],
+
+    // No accuracy figure is quoted here on purpose: the 95% in the CV belongs to
+    // the fabric-defect system, and there is no published measurement-accuracy
+    // number for this one. Scope facts only, all of them checkable.
+    outcome: [
+      { label: 'Deployment', value: 'Live on the line', note: 'Commissioned at MEB Karachi, running with operators.' },
+      { label: 'Delivery', value: 'Desktop + web', note: 'Floor application plus the brand, operator and purchase-order system behind it.' },
+      { label: 'Per garment', value: '7 points of measure', note: 'Shoulders, hem, length, cuff, waist and chest, each against its own tolerance.' },
+      { label: 'After the expo', value: '3 mills', note: 'Nishat Mills, Gul Ahmed and Sapphire requested evaluations.' },
+    ],
+
+    limitations: [
+      'The capture rig is part of the product, not an accessory: the measurement assumes a fixed camera height, a flat table and controlled lighting. Move any of the three and it needs recalibrating.',
+      'The garment has to be laid out flat and unfolded. Drape, a rucked hem or a heavy knit that relaxes on the table all read as a dimension change.',
+      'Tolerances are per article type. A style outside the configured catalogue has to be set up before it can be measured, which is a data-entry job, not a model one.',
+    ],
+
+    stack: ['PyTorch', 'OpenCV', 'Python', 'Electron', 'React', 'Node.js', 'MySQL', 'Docker'],
+
+    links: [],
+
+    media: {
+      poster: '/media/ammara/magicqc-measure.jpg',
+      alt: 'The MagicQC measurement view returning a PASS on a shirt, every panel dimension drawn on the garment in centimetres.',
+      gallery: [
+        { kind: 'image', src: '/media/ammara/magicqc-measure.jpg', caption: 'A shirt measured against spec: every panel dimension in centimetres, verdict PASS.' },
+        { kind: 'image', src: '/media/ammara/magicqc-measure-shirt.jpg', caption: 'A second garment type through the same station, same tolerance check, same one-word verdict.' },
+        { kind: 'image', src: '/media/ammara/magicqc-measure-trouser.jpg', caption: 'Trouser measurement paused mid-check, the dimensions held on screen for the operator to confirm.' },
+        { kind: 'image', src: '/media/ammara/magicqc-desktop.jpg', caption: 'The desktop app on the floor: seven points of measure, each with its own tolerance and result. Cropped to the measurement panel \u2014 the sample brand logos beside it are not ours to publish.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/magicqc-web.jpg', caption: 'The web app: brands, operators and purchase orders \u2014 the system of record behind the station.', fit: 'contain' },
+        { kind: 'clip', src: '/media/ammara/magicqc-rig-run.jpg', webm: '/media/ammara/magicqc-rig-run.webm', mp4: '/media/ammara/magicqc-rig-run.mp4', caption: 'The deployed station running on the production line at MEB Karachi.' },
+        { kind: 'image', src: '/media/ammara/magicqc-rig.jpg', caption: 'The measurement station as installed \u2014 camera boom, lit table, operator screen.' },
+        { kind: 'image', src: '/media/ammara/magicqc-stand.jpg', caption: 'The MagicQC stand at the 32nd Textile Asia Expo, demonstrated live to mill buyers.' },
+        { kind: 'image', src: '/media/ammara/magicqc-team.jpg', caption: 'The MagicQC exhibitor team on the stand at Textile Asia.' },
+      ],
+    },
+
+    featured: true,
+    confidential:
+      'Client product. The source is not public; the deployed station, the interface and the exhibition material are what can be shown.',
+  },
+
+  {
+    slug: 'fabric-defect-detection',
+    title: 'Fabric Defect Detection',
+    kicker: 'Textile inspection \u2014 live mill floor',
     year: '2026',
     role: 'AI / Computer Vision Engineer',
     org: 'Robionix Technologies',
@@ -28,23 +91,23 @@ export const projects: Project[] = [
       'Fabric defects are caught by inspectors watching cloth move past them, so the rare ones slip through, two inspectors disagree on the same roll, and nothing is written down that the mill can act on later.',
 
     approach: [
-      'Collected and labelled ~1,600 images myself on the mill floor — there was no dataset to start from, and a public benchmark would not have matched this cloth, this lighting or this camera.',
+      'Collected and labelled ~1,600 images myself on the mill floor \u2014 there was no dataset to start from, and a public benchmark would not have matched this cloth, this lighting or this camera.',
       'Trained YOLOv8 on three known defect classes, then added PatchCore anomaly detection on top so defect types absent from the training set are still caught instead of passing as clean.',
+      'Fused the two branches into one call per frame, so the operator sees a single verdict rather than two models disagreeing.',
       'Built the whole runtime path: camera capture, OpenCV preprocessing, both models in sequence, a Flask inference API, and a React dashboard the operator actually watches. Dockerised for install.',
-      'Installed it on the line and worked with the mill operators through rollout — the part where a system either gets used or gets switched off.',
+      'Installed it on the line and worked with the mill operators through rollout \u2014 the part where a system either gets used or gets switched off.',
       'Chased edge cases under real production conditions and re-tuned thresholds to cut false positives, because an inspector who stops trusting the alarm ignores it.',
-      'MagicQC ships as a platform, not a script: a desktop app on the floor, a web app managing brands, operators and purchase orders, and a garment size-measurement mode alongside the defect inspection. My half is the defect detection; the screenshots show the product it plugs into.',
     ],
 
     outcome: [
       { label: 'Accuracy', value: '95%', note: 'Held-out test split, on the live production line.' },
       { label: 'Dataset', value: '~1,600 images', note: 'Collected and labelled on-site at the mill.' },
       { label: 'Defect classes', value: '3 + unseen', note: 'YOLOv8 for the known three, PatchCore for everything else.' },
-      { label: 'After the expo', value: '3 mills', note: 'Nishat Mills, Gul Ahmed and Sapphire requested evaluations.' },
+      { label: 'Verdict', value: 'One per frame', note: 'Supervised and anomaly branches fused before the operator sees them.' },
     ],
 
     limitations: [
-      'Trained on one mill’s cloth under one lighting rig. Different fabric, different light or a moved camera means re-collecting a reference set and re-tuning the threshold — the model does not transfer for free.',
+      'Trained on one mill\u2019s cloth under one lighting rig. Different fabric, different light or a moved camera means re-collecting a reference set and re-tuning the threshold \u2014 the model does not transfer for free.',
       'Only three defect types are classified by name. Everything else is flagged as an anomaly, which tells the operator that something is wrong but not what it is.',
       'The anomaly branch is the sensitive one: raising recall on unseen defects raises the false-positive rate, and the balance point is a business decision the mill makes, not one the model settles.',
     ],
@@ -65,17 +128,12 @@ export const projects: Project[] = [
         { kind: 'image', src: '/media/fabric/dashboard.jpg', caption: 'The operator dashboard: roll statistics, the defect log, and the pass/fail call.' },
         { kind: 'image', src: '/media/ammara/fabric-rig.jpg', caption: 'The inspection rig installed on the mill floor \u2014 camera and lighting over the fabric roll, operator screen alongside.' },
         { kind: 'image', src: '/media/fabric/result.jpg', caption: 'The live camera view with a detection boxed on moving cloth.' },
-        { kind: 'image', src: '/media/ammara/magicqc-web.jpg', caption: 'The MagicQC web app \u2014 brands, operators and purchase orders, the management side of the platform.', fit: 'contain' },
-        { kind: 'image', src: '/media/ammara/magicqc-desktop.jpg', caption: 'The desktop app on the floor: live per-panel measurement against tolerance. Cropped to the measurement panel \u2014 the sample brand logos beside it are not ours to publish.', fit: 'contain' },
-        { kind: 'clip', src: '/media/ammara/magicqc-rig-run.jpg', webm: '/media/ammara/magicqc-rig-run.webm', mp4: '/media/ammara/magicqc-rig-run.mp4', caption: 'The deployed MagicQC station running on the production line at MEB Karachi.' },
-        { kind: 'image', src: '/media/ammara/magicqc-stand.jpg', caption: 'The MagicQC stand at the expo, the system demonstrated live to mill buyers.' },
-        { kind: 'image', src: '/media/ammara/magicqc-team.jpg', caption: 'The MagicQC exhibitor team on the stand at Textile Asia.' },
       ],
     },
 
     featured: true,
     confidential:
-      'Client system. The source for the mill deployment is not public; the metrics, the floor photography and the exhibition material are what can be shown.',
+      'Client system. The mill deployment is not public; the metrics, the model output and the floor photography are what can be shown.',
   },
 
   {

@@ -44,7 +44,7 @@ export const site = {
   },
 
   location: 'Lahore, Pakistan',
-  relocation: 'Open to Lahore / Islamabad / Karachi / remote',
+  relocation: 'Open to remote & onsite',
   availability: 'Available immediately for full-time AI/ML engineering roles',
   /** What the proof section leads with — leadership reach, not client count. */
   reach:
@@ -80,7 +80,7 @@ export const site = {
       title: 'Production Computer Vision',
       blurb:
         'Detection, classification, segmentation and anomaly detection — from collecting the dataset on your floor to a system running on your camera. Known defects and the ones nobody labelled yet.',
-      evidence: ['magicqc-fabric-defect', 'anomaly-detection-mlops'],
+      evidence: ['fabric-defect-detection', 'anomaly-detection-mlops'],
     },
     {
       n: '02',
@@ -94,7 +94,7 @@ export const site = {
       title: 'On-Site Deployment & Delivery',
       blurb:
         'Camera and hardware integration, the API, the operator dashboard, the install, and the rollout with the people who have to use it. I am comfortable in the field, not only at a desk.',
-      evidence: ['magicqc-fabric-defect', 'uav-surveillance'],
+      evidence: ['magicqc-size-measurement', 'uav-surveillance'],
     },
   ],
 
@@ -132,11 +132,11 @@ export const site = {
   faq: [
     {
       q: 'Are you available, and where?',
-      a: 'Immediately, for full-time AI/ML engineering roles. I am based in Lahore and open to Lahore, Islamabad, Karachi or remote. I graduate from NUTECH in 2026 and have been working in industry alongside the degree since 2025.',
+      a: 'Immediately, for full-time AI/ML engineering roles. I am based in Lahore and open to both remote and onsite work. I graduate from NUTECH in 2026 and have been working in industry alongside the degree since 2025.',
     },
     {
       q: 'What have you actually put into production?',
-      a: 'MagicQC — fabric defect detection running on a live line at 95% accuracy on a held-out test set. I collected and labelled the ~1,600-image dataset myself on the mill floor because none existed, trained YOLOv8 for three known defect classes, added PatchCore for the unseen ones, and installed the whole pipeline: camera capture, OpenCV preprocessing, both models, Flask API, React operator dashboard. At Evolvian I shipped RAG pipelines into client-facing applications that are live now.',
+      a: 'Two systems at Robionix, both installed on a working floor. MagicQC is an AI-based garment size measurement station — it derives every point of measure from the garment and calls it against the buyer’s tolerance, shipped as a desktop app plus the web system of record behind it. The fabric defect detector is separate: YOLOv8 for three known classes paired with PatchCore for the unseen ones, 95% accuracy on a held-out test set, on a dataset of ~1,600 images I collected and labelled on the mill floor myself. At Evolvian I shipped RAG pipelines into client-facing applications that are live now.',
     },
     {
       q: 'Vision or LLMs — which are you actually deep in?',
@@ -168,8 +168,9 @@ export const experience: Role[] = [
     start: 'Feb 2026',
     end: 'Jun 2026',
     highlights: [
-      { text: 'Built and deployed MagicQC, a fabric defect detection product, from scratch to a live production line — YOLOv8 for three known defect classes paired with PatchCore for defects absent from the training set.', projectSlug: 'magicqc-fabric-defect' },
-      { text: 'Went on-site to a textile mill and collected and labelled ~1,600 images myself on the production floor, because there was no existing dataset.', projectSlug: 'magicqc-fabric-defect' },
+      { text: 'Built and deployed MagicQC, an AI-based automated garment size measurement system — a camera station that derives every point of measure from the garment itself and calls it against the buyer’s tolerance, delivered as a factory-floor desktop app plus the web system of record behind it.', projectSlug: 'magicqc-size-measurement' },
+      { text: 'Built a separate fabric defect detection system for the mill floor: YOLOv8 for three known defect classes paired with PatchCore for defects absent from the training set, 95% accuracy on a held-out test set.', projectSlug: 'fabric-defect-detection' },
+      { text: 'Went on-site to a textile mill and collected and labelled ~1,600 images myself on the production floor, because there was no existing dataset.', projectSlug: 'fabric-defect-detection' },
       { text: 'Installed and integrated the full system — camera capture, OpenCV preprocessing, both models, Flask API, React dashboard, Dockerised — and worked with mill operators through rollout.' },
       { text: 'Re-tuned thresholds against real production conditions to cut false positives rather than chase benchmark accuracy.' },
       { text: 'Exhibited at the 32nd Textile Asia Expo; Nishat Mills, Gul Ahmed and Sapphire requested evaluations. Presented the technology and business case at a national industry open house.' },
@@ -217,7 +218,7 @@ export const awards: Award[] = [
   { place: 'Runner-up', title: 'NAIS National AI Seminar', event: 'NAIS', year: '2025' },
   { place: 'Fellow', title: 'Millennium Fellowship', event: 'United Nations Academic Impact', year: '' },
   { place: 'Ambassador', title: '6th International Student Convention & Expo', event: 'Islamabad · 3-6 May', year: '2026' },
-  { place: 'Exhibitor', title: 'MagicQC at the 32nd Textile Asia Expo', event: 'Lahore Expo Centre', year: '2026', projectSlug: 'magicqc-fabric-defect' },
+  { place: 'Exhibitor', title: 'MagicQC at the 32nd Textile Asia Expo', event: 'Lahore Expo Centre', year: '2026', projectSlug: 'magicqc-size-measurement' },
 ]
 
 /**
@@ -251,7 +252,8 @@ export const leadership: Leadership[] = [
       poster: '/media/ammara/nsc-result.jpg',
       webm: '/media/ammara/nsc-result.webm',
       mp4: '/media/ammara/nsc-result.mp4',
-      alt: 'The moment the NUTECH Student Council result is announced in the main auditorium, the hall on its feet.',
+      alt: 'The NUTECH Student Council result announced in the main auditorium — the walk to the podium, then the hall on its feet.',
+      long: true,
     },
   },
   {

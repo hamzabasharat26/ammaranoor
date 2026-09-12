@@ -24,7 +24,7 @@ const CSS = `
   .ats {
     background:#fff; color:var(--ink);
     font-family: Calibri, Carlito, "Segoe UI", Arial, Helvetica, sans-serif;
-    font-size: 9pt; line-height: 1.22;
+    font-size: 8.9pt; line-height: 1.19;
     /* Ligatures OFF: the fi/fl ligature glyphs extract as U+FB01/U+FB02, which
        turns "MLflow" into "ML<fl>ow" for a keyword matcher. */
     font-variant-ligatures: none; font-feature-settings: "liga" 0, "clig" 0;
@@ -36,7 +36,7 @@ const CSS = `
   .ats .avail { font-size: 8.5pt; font-style: italic; margin: 1pt 0 0; }
   .ats h2 {
     font-size: 9pt; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .6px; margin: 6pt 0 2pt;
+    letter-spacing: .6px; margin: 5.5pt 0 1.8pt;
     border-bottom: 0.9pt solid var(--rule); padding-bottom: 1.2pt;
   }
   .ats p { margin: 0 0 2pt; }

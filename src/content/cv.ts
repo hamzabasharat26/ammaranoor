@@ -36,10 +36,10 @@ export const cv = {
   'linkedin.com/in/ammaranoorkhan',
   'github.com/ammaran620-de',
  ],
- availability: 'Available immediately | Open to Lahore / Islamabad / Karachi / Remote',
+ availability: 'Available immediately | Open to remote & onsite',
 
  summary:
-  'AI/ML engineer who takes systems from data collection through to production deployment. Took a fabric inspection line from fully manual to 95%-accurate automated defect detection with YOLOv8 and PatchCore, collecting and labelling the ~1,600-image dataset on-site. Shipped production RAG pipelines into live client applications, and reproduced PatchCore from the original paper to 99.56% AUROC on MVTec AD. 1st place, ICAT National Robotics Competition 2025.',
+  'AI/ML engineer who takes systems from data collection through to production deployment. Built and commissioned two systems on a live textile floor: an AI garment size measurement station, and a fabric defect detector at 95% accuracy on a ~1,600-image dataset I collected on-site. Shipped production RAG pipelines into live client applications, and reproduced PatchCore from the original paper to 99.56% AUROC on MVTec AD. 1st place, ICAT National Robotics Competition 2025.',
 
  skills: [
   {
@@ -63,14 +63,9 @@ export const cv = {
     'FastAPI, Flask, REST API design, Docker, Linux, Git, ONNX export, latency profiling, inference optimisation, drift monitoring, on-site installation, live camera and hardware integration',
   },
   {
-   label: 'Backend & Frontend',
+   label: 'Backend, Frontend & Languages',
    items:
-    'Node.js, Express.js, MySQL, SQLite, role-based authentication, React.js, Next.js, operator dashboards, live-updating interfaces',
-  },
-  {
-   label: 'Languages',
-   items:
-    'Python, JavaScript (ES6+), SQL, C/C++ | English (professional working), Urdu (native)',
+    'Node.js, Express.js, MySQL, SQLite, role-based authentication, React.js, Next.js, operator dashboards | Python, JavaScript (ES6+), SQL, C/C++ | English (professional working), Urdu (native)',
   },
  ],
 
@@ -81,11 +76,10 @@ export const cv = {
    location: 'Lahore, Pakistan',
    dates: 'Feb 2026 - Jun 2026',
    bullets: [
-    'Built and deployed MagicQC, a fabric defect detection system, from scratch to a live production line at 95% accuracy on a held-out test set.',
-    'Collected and labelled ~1,600 images on-site at a textile mill; trained YOLOv8 for three defect classes and added PatchCore anomaly detection to catch defect types absent from the training set.',
-    'Shipped the full pipeline solo - camera capture, OpenCV preprocessing, dual-model inference, Flask API, React operator dashboard, Dockerised deployment - then installed it on the line, ran operator rollout, and re-tuned thresholds under real production conditions to cut false positives.',
-    'Delivered inside the wider MagicQC platform: a factory-floor desktop app plus a React/Node web app managing brands, operators and purchase orders.',
-    'Exhibited at the 32nd Textile Asia Expo - Nishat Mills, Gul Ahmed and Sapphire requested evaluations; presented the technology and business case at a national industry open house.',
+    'Built and deployed MagicQC, an AI-based automated garment size measurement system: a fixed-camera station that segments the garment, derives seven points of measure and calls each against the buyer tolerance for one PASS/FAIL verdict. Shipped as a floor desktop app plus a React/Node web app managing brands, article types, operators and purchase orders, and commissioned on the production line at MEB Karachi.',
+    'Built a separate fabric defect detection system for the mill floor: YOLOv8 across three known defect classes fused with PatchCore anomaly detection for unseen defects, reaching 95% accuracy on a held-out test set.',
+    'Collected and labelled the ~1,600-image defect dataset on-site because none existed; shipped the runtime solo - camera capture, OpenCV preprocessing, dual-model inference, Flask API, React dashboard, Dockerised - then ran operator rollout and re-tuned thresholds under production conditions to cut false positives.',
+    'Exhibited MagicQC at the 32nd Textile Asia Expo - Nishat Mills, Gul Ahmed and Sapphire requested evaluations; presented the technology and business case at a national industry open house.',
    ],
   },
   {
@@ -94,9 +88,9 @@ export const cv = {
    location: 'Lahore, Pakistan',
    dates: 'Aug 2025 - Jan 2026',
    bullets: [
-    'Shipped production RAG pipelines end to end - document ingestion, embeddings, vector retrieval, LLM generation - into live client applications.',
+    'Shipped production RAG pipelines end to end - document ingestion, embeddings, vector retrieval, LLM generation - into live client applications, with the REST APIs and React dashboards (role-based auth, live updates) that served them.',
     'Rebuilt chunking and retrieval strategy after diagnosing why standard metrics did not predict real failures, raising output consistency across messy client documents.',
-    'Collapsed a multi-step manual review into one automated pipeline by chaining LLM text processing, OCR and YOLOv8 detection, and built the REST APIs and React dashboards (role-based auth, live updates) that served it - owning features from client requirement to deployed release.',
+    'Collapsed a multi-step manual review into one automated pipeline by chaining LLM text processing, OCR and YOLOv8 detection; owned features from client requirement to deployed release.',
    ],
   },
   {
@@ -118,7 +112,15 @@ export const cv = {
    link: 'github.com/ammaran620-de/industrial-anomaly-detection-mlops',
    bullets: [
     'Implemented PatchCore from the original paper - frozen WideResNet-50 features, patch memory bank, 1% greedy k-center coreset, trained on defect-free images only. 99.56% AUROC on MVTec AD carpet: 87 of 89 defects caught, 26 of 28 good pieces passed, precision/recall/F1 all 0.9775 at the 95th-percentile threshold.',
-    'Served through FastAPI with MLflow-tracked runs, Docker Compose and a drift signal; profiled 535 ms/image on CPU against the 33 ms a 30 FPS line needs and documented the ONNX/INT8 path.',
+    'Served through FastAPI with MLflow-tracked runs, Docker Compose and a drift signal; profiled 535 ms/image on CPU against a 33 ms budget and documented the ONNX/INT8 path.',
+   ],
+  },
+  {
+   title: 'RallyLens - Sports Analytics',
+   stack: 'Python, YOLO, OpenCV, object tracking, pose estimation',
+   link: '',
+   bullets: [
+    'Player and ball tracking on ordinary handheld coaching footage: identities held through the rally, ball speed derived from the recovered track, shot and rally counts computed rather than tagged by hand. Delivers an annotated video plus a dashboard of per-player counts, ball-speed history and an event timeline.',
    ],
   },
  ],
@@ -132,7 +134,6 @@ export const cv = {
 
  achievements: [
   '1st Place, ICAT National Robotics Competition 2025 | Runner-Up, NAIS 2025 National AI Seminar | Millennium Fellow, United Nations Academic Impact Programme.',
-  'Chair, IEEE Women in Engineering, NUTECH Student Branch | Chief Coordinator, NUTECH Student Council.',
-  'Ambassador, 6th International Student Convention & Expo 2026, Islamabad | Exhibitor, 32nd Textile Asia Expo.',
+  'Chair, IEEE Women in Engineering, NUTECH Student Branch | Chief Coordinator, NUTECH Student Council | Ambassador, 6th International Student Convention & Expo 2026, Islamabad.',
  ],
 } as const

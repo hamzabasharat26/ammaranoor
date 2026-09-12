@@ -162,8 +162,11 @@ into a glyph a keyword matcher cannot read).
 - Any media, project or metric belonging to another engineer.
 - Invented projects, invented testimonials, invented certifications. Her CVs list
   no certifications — the section does not exist, and adding one would be fiction.
-- Claiming capabilities the CVs do not state. The garment size-measurement side of
-  MagicQC is deliberately not shown: her CV describes the fabric-defect work.
+- Claiming capabilities the CVs do not state. **MagicQC and the fabric defect
+  detector are two different systems** — MagicQC is the AI-based automated
+  garment size measurement station, the defect detector is the YOLOv8 + PatchCore
+  mill-floor system. The 95% / ~1,600-image figures belong to the defect
+  detector; MagicQC has no published accuracy number and must not be given one.
 - Metrics about the website (bundle size, frame budget) presented as career proof.
 - `localStorage` for anything that matters. Theme preference only.
 
@@ -193,6 +196,11 @@ one scan sweep, two pulsing detection boxes).
 ### Sections, in order
 `Hero → TechStrip → ProjectStrip (≥768px only) → Projects → Services →
 Leadership → Achievements → LightSections (About + FAQ) → Testimonials → Closing`.
+
+`/work` renders the full project grid and then the complete frame index.
+`src/content/frames.ts` is the single source for both the moving strip and that
+grid — a frame that only exists in a marquee cannot be found again, so the two
+surfaces read from one list and cannot drift.
 
 Anchor ids are load-bearing: `#top`, `#work`, `#capabilities`, `#leadership`,
 `#proof`, `#about`, `#faq`, `#testimonials`, `#contact`, and `#light-band` — the

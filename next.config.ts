@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
   // Hide the floating "N" dev overlay button. It only ever renders under
@@ -41,7 +43,14 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'",
+              // 'unsafe-eval' is DEV ONLY. React's development build uses eval()
+              // for debugging features (reconstructing callstacks across
+              // environments); blocking it does nothing to the app but does make
+              // the dev overlay report a permanent "1 Issue". React never uses
+              // eval() in production, so the shipped policy stays strict.
+              isDev
+                ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+                : "script-src 'self' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob:",
               "media-src 'self'",
