@@ -23,7 +23,7 @@ const REF =
   process.argv[3] ??
   path.join(
     process.env.LOCALAPPDATA ?? "",
-    "Temp/claude/d--hamza-portfolio/3ea14c02-e1fb-42fc-9818-8489ee284bc7/scratchpad/ref2"
+    "Temp/claude/d--ammara-portfolio/scratchpad/ref"
   );
 
 /** Matched pairs: our section screenshot <-> the reference frame of that state. */

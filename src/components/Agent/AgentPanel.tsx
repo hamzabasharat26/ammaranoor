@@ -68,7 +68,6 @@ export default function AgentPanel({
   // by an external stream (the conversation), which is exactly what an
   // effect is for; the alternative (deriving it during render) needs a ref
   // read there, which the compiler disallows.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
@@ -82,6 +81,9 @@ export default function AgentPanel({
       // changes" is the sanctioned form).
       queueMicrotask(() => setNewMessagePending(true));
     }
+    // `atBottom` is read, not depended on: this must fire when a message
+    // arrives, not when the reader happens to scroll.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, typing]);
 
   const scrollToBottom = () => {
