@@ -32,12 +32,21 @@ fs.mkdirSync(OUT, { recursive: true });
 /** image -> <out>.jpg + <out>.webp. `crop` is an optional aspect (w/h) that
  *  centre-crops before the resize, so a landscape frame can ship as a portrait
  *  card without the browser doing the cropping. */
-async function image(src, name, { width = 1400, q = 80, crop } = {}) {
+async function image(src, name, { width = 1400, q = 80, crop, cropRight } = {}) {
   if (!exists(src)) return console.warn("  ! missing", src);
   const out = path.join(OUT, name);
   if (!FORCE && exists(out + ".jpg")) return console.log("  = ", name);
 
   let pipe = sharp(src, { failOn: "none" }).rotate();
+  if (cropRight) {
+    // Keep the rightmost `cropRight` fraction of the frame.
+    const { width: w, height: h } = await pipe.metadata();
+    // Derive the width from the offset, never round both independently — an
+    // odd source width makes left + width overflow by a pixel and sharp
+    // rejects the whole extract.
+    const left = Math.round(w * (1 - cropRight));
+    pipe = pipe.extract({ left, top: 0, width: w - left, height: h });
+  }
   if (crop) {
     const { width: w, height: h } = await pipe.metadata();
     const target = crop;
@@ -99,8 +108,56 @@ await image(S("Abassador_of_6th international_convention_medal_win.jpeg"), "isce
 console.log("university");
 await image(S("meeting_with_reactor_nuttech_on_for AI_programs _in university.jpeg"), "rector-ai-programs", { width: 1400, q: 78 });
 
+// --- Project work ---------------------------------------------------------
+// Ammara's own product and field material. Two files from the drone folder are
+// deliberately NOT ingested: Mission.jpeg and Q_Ground_mission_plan.jpeg are
+// QGroundControl plans showing GPS waypoints over a real, identifiable site.
+// The airframe photo and the Gazebo simulation say the same thing about the
+// work without publishing that.
+const ZD = "zips/drone/Drone HEXA/";
+const ZM = "zips/magicqc/Product (Magic QC) Size Measurement /";
+const ZR = ZM + "Deployed Magic QC (MEB) karachi industry/";
+
+console.log("magicqc");
+// The desktop app's left rail is a row of third-party brand logos (Adidas,
+// Puma, Under Armour, Reebok, Zara, Pull&Bear) configured as sample clients.
+// Those are not cleared to publish, so the frame is cropped to the live
+// measurement panel — which is the part that shows the engineering anyway.
+await image(S("MagicQC_desktop_app.png"), "magicqc-desktop", { width: 1100, q: 80, cropRight: 0.5 });
+await image(S("magic_online_web_app.png"), "magicqc-web", { width: 1400, q: 80 });
+await image(S(ZM + "measurement.jpeg"), "magicqc-measure", { width: 1200, q: 80 });
+await image(S(ZM + "half t shirt measurement.jpg"), "magicqc-measure-shirt", { width: 1200, q: 80 });
+await image(S(ZM + "trouser mesure ment.jpg"), "magicqc-measure-trouser", { width: 1200, q: 80 });
+await image(S(ZR + "WhatsApp Image 2026-08-08 at 3.22.45 PM.jpeg"), "magicqc-stand", { width: 1400, q: 78 });
+await image(S(ZR + "WhatsApp Image 2026-08-08 at 3.22.46 PM.jpeg"), "magicqc-rig", { width: 1400, q: 78 });
+
+console.log("fabric");
+await image(S("WhatsApp Image 2026-07-19 at 9.50.00 PM.jpeg"), "fabric-rig", { width: 1400, q: 78 });
+await image(S("fabric_IOU_fusion_frame1022.jpg"), "fabric-fusion-1", { width: 1200, q: 82 });
+await image(S("frame_0092_jpg.rf.89a5f7dc5423a6c1425abcc28cf84891_panel.jpg"), "fabric-fusion-2", { width: 1200, q: 82 });
+
+console.log("uav + parking");
+await image(S("Pakring_dasboard.jpg"), "parking-dashboard", { width: 1400, q: 80 });
+await image(S("Dynamic_Parking_System.png"), "parking-allocation", { width: 1400, q: 80 });
+await image(S("People_counting.png"), "people-count", { width: 1400, q: 78 });
+await image(S("Interction_detection_peoples.png"), "interaction-track", { width: 1400, q: 78 });
+await image(S("Detection_outside.png"), "street-detect", { width: 1400, q: 78 });
+await image(S(ZD + "Drove upper view.png"), "drone-airframe", { width: 1400, q: 80 });
+await image(S(ZD + "Gazebo_Quad_Drone.png"), "drone-sim", { width: 1400, q: 80 });
+
+console.log("llm");
+await image(S("Nexus_AI_RAG_Chatbot.png"), "rag-chatbot", { width: 1400, q: 80 });
+await image(S("OCR1.png"), "ocr-extraction", { width: 1200, q: 80 });
+
+console.log("sports");
+await image(S("hero.jpg"), "rally-hero", { width: 1400, q: 80 });
+await image(S("dashboard.jpg"), "rally-dashboard", { width: 1400, q: 80 });
+
 console.log("clips");
+// The deployed measurement rig running on the floor at MEB Karachi.
 // NSC result announcement: the stage call at ~7s into the hall reaction.
+// The deployed measurement rig running on the floor at MEB Karachi.
+clip(S(ZR + "WhatsApp Video 2026-08-08 at 3.22.44 PM.mp4"), "magicqc-rig-run", { start: 0, dur: 5, w: 640, posterAt: 2 });
 clip(S("win_chief_coordinator_NSC_nutech.mp4"), "nsc-result", { start: 7.5, dur: 5, w: 360, posterAt: 11 });
 // IEEE Day, Islamabad Section — the full 4.7s take.
 clip(S("celebration_of_my_of_wie_chair_IEEE_.mp4"), "ieee-day", { start: 0, dur: 4.7, w: 560, posterAt: 2 });

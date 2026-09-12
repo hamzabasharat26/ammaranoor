@@ -33,6 +33,7 @@ export const projects: Project[] = [
       'Built the whole runtime path: camera capture, OpenCV preprocessing, both models in sequence, a Flask inference API, and a React dashboard the operator actually watches. Dockerised for install.',
       'Installed it on the line and worked with the mill operators through rollout — the part where a system either gets used or gets switched off.',
       'Chased edge cases under real production conditions and re-tuned thresholds to cut false positives, because an inspector who stops trusting the alarm ignores it.',
+      'MagicQC ships as a platform, not a script: a desktop app on the floor, a web app managing brands, operators and purchase orders, and a garment size-measurement mode alongside the defect inspection. My half is the defect detection; the screenshots show the product it plugs into.',
     ],
 
     outcome: [
@@ -55,15 +56,19 @@ export const projects: Project[] = [
     ],
 
     media: {
-      poster: '/media/fabric-poster.jpg',
+      poster: '/media/ammara/fabric-fusion-1.jpg',
       alt: 'Four-panel fabric inspection output: the raw camera frame, the PatchCore anomaly heatmap, the YOLO detections, and the fused result with confidence scores.',
       gallery: [
-        { kind: 'image', src: '/media/fabric-poster.jpg', caption: 'One frame, four stages: raw cloth, PatchCore anomaly heatmap, YOLO detections, fused result.' },
-        { kind: 'clip', src: '/media/fabric/detect.jpg', webm: '/media/fabric/detect.webm', mp4: '/media/fabric/detect.mp4', caption: 'The anomaly branch running live — defects flare on the heatmap as the cloth moves under the camera.' },
+        { kind: 'image', src: '/media/ammara/fabric-fusion-1.jpg', caption: 'One frame, four stages: raw cloth, PatchCore anomaly heatmap, YOLO detections, fused result.' },
+        { kind: 'image', src: '/media/ammara/fabric-fusion-2.jpg', caption: 'The same fusion on a different defect \u2014 the anomaly branch flags what the supervised branch has no class for.' },
+        { kind: 'clip', src: '/media/fabric/detect.jpg', webm: '/media/fabric/detect.webm', mp4: '/media/fabric/detect.mp4', caption: 'Running live \u2014 defects flare on the heatmap as the cloth moves under the camera.' },
         { kind: 'image', src: '/media/fabric/dashboard.jpg', caption: 'The operator dashboard: roll statistics, the defect log, and the pass/fail call.' },
-        { kind: 'image', src: '/media/fabric/machine.jpg', caption: 'The inspection rig on the mill floor — camera and lighting over the fabric roll, operator PC alongside.' },
+        { kind: 'image', src: '/media/ammara/fabric-rig.jpg', caption: 'The inspection rig installed on the mill floor \u2014 camera and lighting over the fabric roll, operator screen alongside.' },
         { kind: 'image', src: '/media/fabric/result.jpg', caption: 'The live camera view with a detection boxed on moving cloth.' },
-        { kind: 'image', src: '/media/ammara/textile-asia-stand.jpg', caption: 'Textile Asia 2026, Lahore Expo Centre — where the system was shown to the mills.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/magicqc-web.jpg', caption: 'The MagicQC web app \u2014 brands, operators and purchase orders, the management side of the platform.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/magicqc-desktop.jpg', caption: 'The desktop app on the floor: live per-panel measurement against tolerance. Cropped to the measurement panel \u2014 the sample brand logos beside it are not ours to publish.', fit: 'contain' },
+        { kind: 'clip', src: '/media/ammara/magicqc-rig-run.jpg', webm: '/media/ammara/magicqc-rig-run.webm', mp4: '/media/ammara/magicqc-rig-run.mp4', caption: 'The deployed MagicQC station running on the production line at MEB Karachi.' },
+        { kind: 'image', src: '/media/ammara/magicqc-stand.jpg', caption: 'The MagicQC stand at the expo, the system demonstrated live to mill buyers.' },
         { kind: 'image', src: '/media/ammara/magicqc-team.jpg', caption: 'The MagicQC exhibitor team on the stand at Textile Asia.' },
       ],
     },
@@ -171,11 +176,12 @@ export const projects: Project[] = [
     links: [],
 
     media: {
-      poster: '/media/diagrams/rag-card.svg',
-      alt: 'Diagram of the retrieval pipeline: documents are ingested and chunked, embedded into a vector store, retrieved against the user question, and passed to the language model, with an OCR and detection branch feeding the same path.',
+      poster: '/media/ammara/rag-chatbot.jpg',
+      alt: 'The retrieval assistant answering a pricing-policy question, with the retrieved source chunks and their similarity scores listed beside the answer.',
       gallery: [
-        { kind: 'image', src: '/media/diagrams/rag-card.svg', caption: 'Ingest, chunk, embed, retrieve, generate — the path a client question actually takes.', fit: 'contain' },
-        { kind: 'image', src: '/media/diagrams/rag-pipeline.svg', caption: 'The same path in full, including the OCR and YOLOv8 branch that replaced the multi-step manual review.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/rag-chatbot.jpg', caption: 'A policy question answered from the retrieved chunks, each source and its score shown alongside \u2014 grounded, not guessed.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/ocr-extraction.jpg', caption: 'The OCR branch: key terms and structured fields pulled out of a scanned document so they enter the same retrieval path.', fit: 'contain' },
+        { kind: 'image', src: '/media/diagrams/rag-pipeline.svg', caption: 'The path in full \u2014 ingest, chunk, embed, retrieve, generate \u2014 including the OCR and YOLOv8 branch that replaced the manual review.', fit: 'contain' },
       ],
     },
 
@@ -219,17 +225,75 @@ export const projects: Project[] = [
     links: [],
 
     media: {
-      poster: '/media/diagrams/uav-card.svg',
-      alt: 'Diagram of the UAV perception path: a live aerial video feed is passed through detection and tracking, then aggregated into a dashboard showing live detections and parking slot occupancy.',
+      poster: '/media/ammara/parking-dashboard.jpg',
+      alt: 'The parking monitoring dashboard: a facility-wide video search over live camera feeds, filtered by person, vehicle, face and licence plate, with recent detections listed underneath.',
       gallery: [
-        { kind: 'image', src: '/media/diagrams/uav-card.svg', caption: 'Aerial feed to occupancy count: detect, track across frames, aggregate into a number.', fit: 'contain' },
-        { kind: 'image', src: '/media/diagrams/uav-pipeline.svg', caption: 'The full perception path and the dashboard it drives. No programme imagery is shown.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/parking-dashboard.jpg', caption: 'The operator view: search recorded footage across the facility by person, vehicle, face or plate \u2014 detections turned into something searchable.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/people-count.jpg', caption: 'Person detection and tracking from above: 29 people in frame, 48 unique IDs held across the scene.' },
+        { kind: 'image', src: '/media/ammara/interaction-track.jpg', caption: 'The same tracker deciding who is interacting with whom \u2014 31 in frame, 19 interacting.' },
+        { kind: 'image', src: '/media/ammara/street-detect.jpg', caption: 'Detection on street footage: people, vehicles and carried objects, each with its confidence.' },
+        { kind: 'image', src: '/media/ammara/drone-airframe.jpg', caption: 'The hexacopter airframe the perception payload flies on.' },
+        { kind: 'image', src: '/media/ammara/drone-sim.jpg', caption: 'The same airframe in Gazebo \u2014 the stack was validated in simulation before it flew.', fit: 'contain' },
+        { kind: 'image', src: '/media/ammara/parking-allocation.jpg', caption: 'The dynamic slot-allocation idea the dashboard serves. The capacity figure on this slide is the product projection, not a result I measured.', fit: 'contain' },
+        { kind: 'image', src: '/media/diagrams/uav-pipeline.svg', caption: 'The perception path in full: feed, detect, track, aggregate.', fit: 'contain' },
       ],
     },
 
     featured: true,
     confidential:
-      'Defence-adjacent work. No imagery from the programme is shown and the description does not go beyond what the CV states.',
+      'Defence-adjacent work. The two QGroundControl mission plans from this programme are deliberately not published: they show GPS waypoints over a real, identifiable site. The airframe and the simulation carry the same evidence without that.',
+  },
+
+  {
+    slug: 'rallylens-sports-analytics',
+    title: 'RallyLens',
+    kicker: 'Sports analytics on ordinary footage',
+    // NOTE FOR AMMARA: this is the one project on the site that is not in any
+    // of the three source CVs — it was added from your own build screenshots.
+    // Add a line for it to the CV so the two agree; until then the copy below
+    // stays strictly to what the interface itself shows and claims no metric
+    // that is not legible on screen.
+    year: '2026',
+    role: 'Creator',
+    org: 'Independent',
+    status: 'research',
+    domains: ['computer-vision'],
+
+    problem:
+      'Coaching video is a handheld camera pointed at a court, and the analytics tools that exist assume a fixed camera, a regulation court and a labelled dataset — so none of them run on the footage a coach actually has.',
+
+    approach: [
+      'Detects and tracks every player through the rally, holding an identity per person rather than a box per frame.',
+      'Recovers the ball — small, fast and motion-blurred — and reads a speed off it, then counts shots and rallies from the track rather than from a manual tag.',
+      'Renders the result two ways: an annotated video a coach can watch, and a dashboard with the per-player counts, the ball-speed history and an event timeline.',
+    ],
+
+    outcome: [
+      { label: 'Tracked per rally', value: '4 players + ball', note: 'Identity held across the clip, not re-detected per frame.' },
+      { label: 'Ball speed', value: 'Read live', note: 'Derived from the recovered ball track and drawn on the frame.' },
+      { label: 'Output', value: 'Video + dashboard', note: 'Annotated clip plus per-player counts and an event timeline.' },
+    ],
+
+    limitations: [
+      'Built and tested on the clips I had, not on a benchmark set — treat the numbers on screen as its own output, not as a validated accuracy figure.',
+      'The ball is the hard part: it is a few pixels wide and motion-blurred, so the track is partly inferred between detections rather than detected in every frame.',
+      'Court geometry is annotated once by hand. Automatic court-line detection is not built.',
+    ],
+
+    stack: ['YOLO', 'Object tracking', 'OpenCV', 'Pose estimation', 'Python'],
+
+    links: [],
+
+    media: {
+      poster: '/media/ammara/rally-hero.jpg',
+      alt: 'RallyLens tracking four players and the ball on a court, with per-player labels, ball speed and shot counts drawn over the frame.',
+      gallery: [
+        { kind: 'image', src: '/media/ammara/rally-hero.jpg', caption: 'Live overlay: every player tracked by identity, ball speed and shot counts drawn on the frame.' },
+        { kind: 'image', src: '/media/ammara/rally-dashboard.jpg', caption: 'The dashboard behind it — ball-speed history, per-player shot counts, target geometry and the event timeline.', fit: 'contain' },
+      ],
+    },
+
+    featured: false,
   },
 ]
 

@@ -10,7 +10,7 @@ manager deciding, in about thirty seconds, whether this person has shipped
 anything real. Every project, metric and claim traces back to a source CV or to
 a public repository — nothing on the site is invented copy.
 
-- Four case studies, each with at least one measured outcome **and** a stated
+- Five case studies, each with at least one measured outcome **and** a stated
   limitation. The limitations are the point: a portfolio with no failure modes
   reads as inexperience.
 - A leadership section, because the IEEE WIE chair and student-council roles are

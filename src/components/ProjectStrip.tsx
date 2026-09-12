@@ -6,61 +6,87 @@ export type StripItem = {
   id: string;
   title: string;
   poster: string;
-  /** Short chip: a project domain, or a lab technique. */
+  /** Short chip: a project domain, or what the frame shows. */
   tag: string;
-  /** `/work/<slug>` for a case study, `/#lab` for a lab demo. */
+  /** `/work/<slug>` for a case study, `/#proof` for field photography. */
   href: string;
 };
 
 /**
- * Horizontal auto-scrolling strip of the work — the nine shipped projects plus
- * a handful of lab techniques. Pure CSS marquee (see `.marquee` in
- * globals.css): the list is rendered twice inside one animated track so the
- * -50% loop is seamless; it pauses on hover and freezes under reduced motion.
- * Server component — no JS ships for it.
+ * Two horizontal auto-scrolling lanes of the work, running in opposite
+ * directions: the case studies on top, the individual screens and field frames
+ * underneath.
+ *
+ * Pure CSS marquee (see `.marquee` in globals.css) — the list is rendered twice
+ * inside one animated track so the -50% loop is seamless, it pauses on hover
+ * and freezes under reduced motion. Server component: no JS ships for it.
  */
-export default function ProjectStrip({ items }: { items: StripItem[] }) {
-  const card = (it: StripItem, dup: boolean) => (
+function Card({ it, dup }: { it: StripItem; dup: boolean }) {
+  return (
     <Link
-      key={`${dup ? "b" : "a"}-${it.id}`}
       href={it.href}
       aria-hidden={dup || undefined}
       tabIndex={dup ? -1 : undefined}
-      className="group relative block w-[260px] shrink-0 overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-line-strong sm:w-[300px]"
+      className="group relative block w-[240px] shrink-0 overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-line-strong sm:w-[280px]"
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden">
         <Image
           src={it.poster}
           alt=""
           fill
-          sizes="300px"
+          sizes="280px"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           unoptimized={it.poster.endsWith(".svg")}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        {/* The label sits on the image, so both the scrim and the type are
+            fixed colours — `--color-ink` is paper in the light theme and this
+            caption would vanish into it. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
       </div>
       <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 p-3">
-        <span className="truncate text-sm font-medium text-fg">{it.title}</span>
-        <span className="shrink-0 rounded-full border border-line-strong bg-ink/60 px-2 py-0.5 text-[0.5625rem] uppercase tracking-wider text-fg-dim">
+        <span className="truncate text-sm font-medium text-white">{it.title}</span>
+        <span className="shrink-0 rounded-full border border-white/30 bg-black/65 px-2 py-0.5 text-[0.5625rem] uppercase tracking-wider text-white">
           {it.tag}
         </span>
       </div>
     </Link>
   );
+}
 
+function Lane({ items, reverse }: { items: StripItem[]; reverse?: boolean }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="marquee-track relative flex overflow-hidden">
+      <div className={`marquee gap-4 pr-4 ${reverse ? "marquee-reverse" : ""}`}>
+        {items.map((it) => (
+          <Card key={`a-${it.id}`} it={it} dup={false} />
+        ))}
+        {items.map((it) => (
+          <Card key={`b-${it.id}`} it={it} dup />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function ProjectStrip({
+  top,
+  bottom,
+}: {
+  top: StripItem[];
+  bottom: StripItem[];
+}) {
   return (
     <section
       aria-label="Selected work"
       className="relative overflow-hidden border-t border-line py-8"
     >
       <p className="label mx-auto mb-5 w-full max-w-6xl px-6 md:px-10">
-        Selected work — shipped &amp; in the lab
+        Selected work — shipped, deployed, measured
       </p>
-      <div className="marquee-track relative flex overflow-hidden">
-        <div className="marquee gap-4 pr-4">
-          {items.map((it) => card(it, false))}
-          {items.map((it) => card(it, true))}
-        </div>
+      <div className="space-y-4">
+        <Lane items={top} />
+        <Lane items={bottom} reverse />
       </div>
     </section>
   );

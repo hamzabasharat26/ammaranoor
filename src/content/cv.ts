@@ -70,7 +70,7 @@ export const cv = {
   {
    label: 'Languages',
    items:
-    'Python, JavaScript (ES6+), SQL, C/C++ | English (professional working proficiency), Urdu (native)',
+    'Python, JavaScript (ES6+), SQL, C/C++ | English (professional working), Urdu (native)',
   },
  ],
 
@@ -83,7 +83,8 @@ export const cv = {
    bullets: [
     'Built and deployed MagicQC, a fabric defect detection system, from scratch to a live production line at 95% accuracy on a held-out test set.',
     'Collected and labelled ~1,600 images on-site at a textile mill; trained YOLOv8 for three defect classes and added PatchCore anomaly detection to catch defect types absent from the training set.',
-    'Shipped the full pipeline solo - camera capture, OpenCV preprocessing, dual-model inference, Flask API, React operator dashboard, Dockerised deployment - then installed it on the line, ran operator rollout, and re-tuned thresholds against real production conditions to cut false positives.',
+    'Shipped the full pipeline solo - camera capture, OpenCV preprocessing, dual-model inference, Flask API, React operator dashboard, Dockerised deployment - then installed it on the line, ran operator rollout, and re-tuned thresholds under real production conditions to cut false positives.',
+    'Delivered inside the wider MagicQC platform: a factory-floor desktop app plus a React/Node web app managing brands, operators and purchase orders.',
     'Exhibited at the 32nd Textile Asia Expo - Nishat Mills, Gul Ahmed and Sapphire requested evaluations; presented the technology and business case at a national industry open house.',
    ],
   },
@@ -95,8 +96,7 @@ export const cv = {
    bullets: [
     'Shipped production RAG pipelines end to end - document ingestion, embeddings, vector retrieval, LLM generation - into live client applications.',
     'Rebuilt chunking and retrieval strategy after diagnosing why standard metrics did not predict real failures, raising output consistency across messy client documents.',
-    'Collapsed a multi-step manual review process into one automated pipeline by chaining LLM text processing, OCR and YOLOv8 detection.',
-    'Built the REST APIs and React dashboards with role-based auth and live updates; owned features from client requirement to deployed release.',
+    'Collapsed a multi-step manual review into one automated pipeline by chaining LLM text processing, OCR and YOLOv8 detection, and built the REST APIs and React dashboards (role-based auth, live updates) that served it - owning features from client requirement to deployed release.',
    ],
   },
   {
@@ -106,7 +106,7 @@ export const cv = {
    dates: 'Jul 2025 - Sep 2025',
    bullets: [
     'Built a UAV surveillance system performing person tracking and vehicle detection on live aerial video feeds.',
-    'Delivered a smart parking dashboard rendering live detections and slot occupancy from the raw detection stream.',
+    'Delivered a parking operations dashboard turning the raw detection stream into live slot occupancy and searchable footage, filterable by person, vehicle, face or plate.',
    ],
   },
  ],
@@ -117,8 +117,7 @@ export const cv = {
    stack: 'PyTorch, PatchCore, MLflow, FastAPI, Docker, ONNX',
    link: 'github.com/ammaran620-de/industrial-anomaly-detection-mlops',
    bullets: [
-    'Implemented PatchCore from the original paper - frozen WideResNet-50 features, patch memory bank, 1% greedy k-center coreset, trained on defect-free images only.',
-    '99.56% AUROC on MVTec AD carpet: 87 of 89 defects caught, 26 of 28 good pieces passed, precision/recall/F1 all 0.9775 at the 95th-percentile operating threshold.',
+    'Implemented PatchCore from the original paper - frozen WideResNet-50 features, patch memory bank, 1% greedy k-center coreset, trained on defect-free images only. 99.56% AUROC on MVTec AD carpet: 87 of 89 defects caught, 26 of 28 good pieces passed, precision/recall/F1 all 0.9775 at the 95th-percentile threshold.',
     'Served through FastAPI with MLflow-tracked runs, Docker Compose and a drift signal; profiled 535 ms/image on CPU against the 33 ms a 30 FPS line needs and documented the ONNX/INT8 path.',
    ],
   },

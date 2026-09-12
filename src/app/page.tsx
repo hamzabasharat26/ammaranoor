@@ -66,12 +66,13 @@ const projectTitles: Record<string, string> = Object.fromEntries(
   projects.map((p) => [p.slug, p.title])
 );
 
-// The strip: every shipped project, then the field photography. Project cards
-// deep-link to the case study; the photographs jump to the proof section.
+// Two strip lanes, running in opposite directions. The top lane is the case
+// studies; the bottom lane is the individual screens and field frames, each
+// deep-linked to the case study it belongs to.
 //
-// There is no "lab" wall on this site. A technique wall needs Ammara's own
-// capture of each technique running; anything else would be someone else's
-// demo reel with her name over it.
+// Every frame below is Ammara's own capture. There is no "lab" wall of
+// technique demos on this site: that needs her own recording of each technique
+// running, and anything else is someone else's demo reel with her name on it.
 const DOMAIN_TAG: Record<string, string> = {
   "computer-vision": "Vision",
   "edge-ai": "Edge",
@@ -80,15 +81,30 @@ const DOMAIN_TAG: Record<string, string> = {
   "full-stack": "Full-stack",
 };
 
-const stripItems: StripItem[] = [
-  ...projects.map((p) => ({
-    id: p.slug,
-    title: p.title,
-    poster: p.media.frames?.[0] ?? p.media.poster,
-    tag: DOMAIN_TAG[p.domains[0]] ?? "Vision",
-    href: `/work/${p.slug}`,
-  })),
-  ...gallery.slice(0, 5).map((photo, i) => ({
+const stripTop: StripItem[] = projects.map((p) => ({
+  id: p.slug,
+  title: p.title,
+  poster: p.media.frames?.[0] ?? p.media.poster,
+  tag: DOMAIN_TAG[p.domains[0]] ?? "Vision",
+  href: `/work/${p.slug}`,
+}));
+
+const stripBottom: StripItem[] = [
+  { id: "s-fusion", title: "Defect fusion output", poster: "/media/ammara/fabric-fusion-2.jpg", tag: "Vision", href: "/work/magicqc-fabric-defect" },
+  { id: "s-rig", title: "Inspection rig, mill floor", poster: "/media/ammara/fabric-rig.jpg", tag: "Deployed", href: "/work/magicqc-fabric-defect" },
+  { id: "s-dash", title: "Operator dashboard", poster: "/media/fabric/dashboard.jpg", tag: "Full-stack", href: "/work/magicqc-fabric-defect" },
+  { id: "s-web", title: "MagicQC web app", poster: "/media/ammara/magicqc-web.jpg", tag: "Full-stack", href: "/work/magicqc-fabric-defect" },
+  { id: "s-desktop", title: "MagicQC desktop app", poster: "/media/ammara/magicqc-desktop.jpg", tag: "Vision", href: "/work/magicqc-fabric-defect" },
+  { id: "s-parking", title: "Parking operations view", poster: "/media/ammara/parking-dashboard.jpg", tag: "Full-stack", href: "/work/uav-surveillance" },
+  { id: "s-count", title: "Crowd counting + re-ID", poster: "/media/ammara/people-count.jpg", tag: "Tracking", href: "/work/uav-surveillance" },
+  { id: "s-interact", title: "Interaction detection", poster: "/media/ammara/interaction-track.jpg", tag: "Tracking", href: "/work/uav-surveillance" },
+  { id: "s-street", title: "Street-scene detection", poster: "/media/ammara/street-detect.jpg", tag: "Vision", href: "/work/uav-surveillance" },
+  { id: "s-drone", title: "Hexacopter airframe", poster: "/media/ammara/drone-airframe.jpg", tag: "UAV", href: "/work/uav-surveillance" },
+  { id: "s-rag", title: "Grounded retrieval answers", poster: "/media/ammara/rag-chatbot.jpg", tag: "LLM / RAG", href: "/work/rag-document-pipelines" },
+  { id: "s-ocr", title: "OCR term extraction", poster: "/media/ammara/ocr-extraction.jpg", tag: "OCR", href: "/work/rag-document-pipelines" },
+  { id: "s-rally", title: "Player + ball tracking", poster: "/media/ammara/rally-hero.jpg", tag: "Tracking", href: "/work/rallylens-sports-analytics" },
+  { id: "s-anomaly", title: "PatchCore evaluation", poster: "/media/diagrams/anomaly-card.svg", tag: "MLOps", href: "/work/anomaly-detection-mlops" },
+  ...gallery.slice(0, 3).map((photo, i) => ({
     id: `field-${i}`,
     title: photo.tag ?? "From the field",
     poster: photo.src,
@@ -109,7 +125,7 @@ export default function Home() {
         <Hero />
         <TechStrip />
         <ViewportGate min={768}>
-          <ProjectStrip items={stripItems} />
+          <ProjectStrip top={stripTop} bottom={stripBottom} />
         </ViewportGate>
         <Projects projects={projectCards} />
         <Services projectTitles={projectTitles} />

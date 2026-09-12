@@ -904,6 +904,9 @@ html.lenis body {
   animation: marquee 42s linear infinite;
   will-change: transform;
 }
+/* The second lane runs the other way, so the two read as a wall in motion
+   rather than one long conveyor. */
+.marquee-reverse { animation-direction: reverse; }
 .marquee-track:hover .marquee { animation-play-state: paused; }
 /* Off-screen tickers cost nothing (set by the components' observers). */
 .marquee-track[data-idle="true"] .marquee { animation-play-state: paused; }

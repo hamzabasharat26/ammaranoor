@@ -47,11 +47,25 @@ The leadership section is the differentiator, not the pitch. It goes after the w
   the array is empty the section does not render.
 - Fields marked `DRAFT:` are Ammara's to fill. Do not guess at them.
 - No lorem ipsum, ever. If real content is missing, render the empty state.
-- **Media provenance.** Only publish what is hers. Another engineer's screenshots
-  and demo clips were deleted from this repo in 2026-09 rather than re-captioned;
-  a technique wall of borrowed footage is the single fastest way to lose an
-  interview. Where a project has no capture of its own, ship an authored diagram
-  under `public/media/diagrams/` and label it a diagram on the card itself.
+- **Media provenance.** Only publish what is hers. The previous owner's assets
+  were deleted from this repo in 2026-09 rather than re-captioned; borrowed
+  footage under a new name is the single fastest way to lose an interview. Her
+  own product screens, field photography and video were confirmed by her and
+  ingested on 2026-09-12. Where a project still has no capture of its own, ship
+  an authored diagram under `public/media/diagrams/` and label it a diagram on
+  the card itself.
+- **Three things are deliberately held back, and stay held back.** (1) The two
+  QGroundControl mission plans from the NESCOM programme show GPS waypoints over
+  a real, identifiable site. (2) The MagicQC desktop screenshot's left rail is a
+  row of third-party brand logos configured as sample clients, so the frame is
+  cropped to the measurement panel in `build-media-ammara.mjs`. (3) The
+  dynamic-slot-allocation slide carries a capacity projection that is the product
+  team's, not a result she measured — its caption says so, and that caption is
+  not decoration.
+- **RallyLens is the one project not in any CV.** It was added from her own build
+  screenshots at her request. Its copy claims nothing that is not legible on
+  screen. Either add a CV line for it or remove it — the site and the CV must not
+  disagree.
 
 ---
 
@@ -102,8 +116,9 @@ There is **no animation library and no WebGL**.
 ## 5. Accessibility floor (WCAG 2.1 AA) — currently 100/100, keep it there
 
 - Body text ≥ 4.5:1 against its **actual painted** background, in both themes.
-  `scripts/_contrast.mjs` was the throwaway audit used to verify this; the trap is
-  that `color-mix()` computes to `oklab(...)`, which a naive parser reads as black.
+  `node scripts/audit-contrast.mjs` checks every route in both themes; the trap it
+  works around is that `color-mix()` computes to `oklab(...)`, which a naive
+  parser reads as near-black and reports the whole nav as failing.
 - Any scrim over photography uses `black/NN`, never `--color-ink` — ink is paper
   now, and white captions on a white scrim is how that bug presents.
 - Every interactive element has a visible `:focus-visible` state. The hero
